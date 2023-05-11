@@ -1,0 +1,11 @@
+{
+  "usuario": [
+    {
+      "id": "1",
+      "name": "Witer Mendonça",
+      "email": "witer@gmail.com",
+      "senha": "123"
+    }
+  ],
+  "produtos": []
+}
