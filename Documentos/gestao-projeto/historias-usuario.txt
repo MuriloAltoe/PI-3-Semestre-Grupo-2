@@ -1,0 +1,15 @@
+Histórias de Usuário para o Produtor:
+
+Como produtor, quero me cadastrar na plataforma para disponibilizar meus produtos sustentáveis.
+Como produtor, quero cadastrar meus produtos na plataforma, informando detalhes como preço, formas de pagamento, entrega ou retirada.
+Como produtor, desejo informar meu endereço e formas de contato para que os consumidores possam entrar em contato comigo.
+Como produtor, desejo ser avaliado pelos consumidores para garantir a qualidade dos meus produtos e serviços.
+Como produtor, desejo consultar relatórios para acompanhar o desempenho das minhas vendas e avaliações.
+
+Histórias de Usuário para o Consumidor:
+
+Como consumidor, quero me cadastrar na plataforma para ter acesso a produtos sustentáveis.
+Como consumidor, quero consultar produtos desejados por região para encontrar os produtores próximos a mim.
+Como consumidor, desejo entrar em contato com os produtores para fazer perguntas ou solicitar mais informações sobre os produtos.
+Como consumidor, quero escolher entre produtores que oferecem entrega ou só retirada, de acordo com minha preferência.
+Como consumidor, desejo avaliar os produtores para ajudar outros usuários a fazerem escolhas informadas e promover a qualidade dos produtos.
