@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
       error: (err) => console.error(err),
     });
 
+    /** 
     this.service.deleteUser(0).subscribe({
       next: (usuario) => {
         console.log(usuario);
@@ -38,11 +39,7 @@ export class HomeComponent implements OnInit {
       error: (err) => {
         console.error('Exclusão falhou, ', err);
       },
-    });
+    });*/
   }
 
-  returnPalavras(){
-   
-    return 'color: red';
-  }
 }

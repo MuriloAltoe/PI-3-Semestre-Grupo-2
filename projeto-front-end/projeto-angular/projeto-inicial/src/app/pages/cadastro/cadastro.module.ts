@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CadastroComponent } from './cadastro/cadastro.component';
-import { CadastroRoutingModule } from './cadastro-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -11,8 +11,11 @@ import { CadastroRoutingModule } from './cadastro-routing.module';
   ],
   imports: [
     CommonModule,
-    CadastroRoutingModule,
-    
+    ReactiveFormsModule,
+    FormsModule,
+  ],
+  exports: [
+    CadastroComponent
   ]
 })
 export class CadastroModule { }

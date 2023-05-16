@@ -14,9 +14,8 @@
             <input class="form-control me-2" type="search" placeholder="pesquise por produto desejado" aria-label="Search">
         </form>
 
-        <p *ngFor="let user of usuario" [ngStyle]="[returnPalavras()]">
+        <p *ngFor="let user of usuario">
             {{user.name}}
-            {{returnPalavras()}}
         </p>
     </div>
 
@@ -24,8 +23,3 @@
 
 
 
-<div class="container">
-    <footer class="py-4 my-4 border-top ">
-        <p class="text-center text-body-secondary ">© 2023 Company, Inc</p>
-    </footer>
-</div>
