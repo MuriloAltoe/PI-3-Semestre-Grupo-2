@@ -4,7 +4,15 @@
       "id": "1",
       "name": "Witer Mendonça",
       "email": "witer@gmail.com",
-      "senha": "123"
+      "senha": "123",
+      "tipo": "produtor",
+      "cep": "13606-336",
+      "rua": "Augusta Viola",
+      "numero": 893,
+      "bairro": "jd Celina",
+      "cidade": "Araras",
+      "estado": "SP",
+      "complemento": "ap 304, bloco 37"
     }
   ],
   "produtos": []

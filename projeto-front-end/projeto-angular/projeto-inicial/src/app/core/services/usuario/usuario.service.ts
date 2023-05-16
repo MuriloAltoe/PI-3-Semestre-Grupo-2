@@ -14,6 +14,10 @@ export class UsuarioService {
     return this.httpclient.get<IUsuario[]>(`${this.url}usuario`);
   }
 
+  getUserById(id: number): Observable<IUsuario[]> {
+    return this.httpclient.get<IUsuario[]>(`${this.url}usuario/${id}`);
+  }
+
   creatUser(usuaurio: IUsuario): Observable<IUsuario>{
     return this.httpclient.post<IUsuario>(`${this.url}usuario`, usuaurio);
   }

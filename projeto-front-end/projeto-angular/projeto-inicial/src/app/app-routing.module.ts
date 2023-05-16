@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CadastroComponent } from './pages/cadastro/cadastro/cadastro.component';
 
 const routes: Routes = [
   {
@@ -14,8 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'cadastro',
-    loadChildren: () =>
-      import('./pages/cadastro/cadastro.module').then((m) => m.CadastroModule),
+    component: CadastroComponent,
   },
 ];
 
