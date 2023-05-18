@@ -78,8 +78,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'banco',
-        'HOST': 'localhost',
-        'PORT': '27017'
+        'CLIENT': {
+            'host': 'localhost',
+            'port': 27017,
+        },
     }
 }
 
