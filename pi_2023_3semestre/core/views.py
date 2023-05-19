@@ -1,47 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import MyModel
+# from .models import MyModel
 from .models import Usuario, Barraca, Itens
+import pymongo
 
 
 
-def mymodel_list(request):
-    mymodels = MyModel.objects.filter()
-    data = {'results': list(mymodels.values())}
-    return JsonResponse(data)
 
-#CRUD
+def showUser(request, id):
+    conn = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = conn["banco"]
+    collection = db["usuarios"]
 
-# Delete do Usuário
-def deleteUser(request, id):
-    usuario = Usuario.objects.get(id=id)
-    usuario.delete()
-    return HttpResponse('Usuário deletado com sucesso!!')
+    pipeline = [
+    { "$match": { "ObjectId": id } },
+    ]
 
-# Delete da Barraca
-def deleteBarraca(request, id):
-    barraca = Barraca.objects.get(id=id)
-    barraca.delete()
-    return HttpResponse('Barraca deletado com sucesso!!')
-
-# Delete dos Itens
-def deleteItens(request, id):
-    itens = Itens.objects.get(id=id)
-    itens.delete()
-    return HttpResponse('Item deletado com sucesso!!')
-
-
-# Update do Usuário
-def updateUser(request, id):
-    usuario = Usuario.objects.get(id=id)
-    if request.method == 'POST':
-        email = request.POST['email']
-        
-        usuario.email = email
-        usuario.save()
-        return HttpResponse('Usuário atualizado com sucesso!!')
-    else:
-        return render(request, 'update.html', {'usuario': usuario})
-    
+    result = list(collection.aggregate(pipeline))
+    result2 = dict(result[0])
+    dictRetorno = {
+        "pk": result2["primary_key"],
+        "email": result2["email"],
+    }
+    print(result2)
+    return JsonResponse(dictRetorno)
 
     
