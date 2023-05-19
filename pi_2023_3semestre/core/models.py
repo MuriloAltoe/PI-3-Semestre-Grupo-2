@@ -19,7 +19,7 @@ class Barraca(djongo_models.Model):
 
 
 class Itens(djongo_models.Model):
-    id_barraca = models.EmailField(verbose_name='email_', unique=True)
+    id_barraca = models.CharField(verbose_name='email_', unique=True, max_length=30)
 
     class Meta:
         db_table = 'itens'
