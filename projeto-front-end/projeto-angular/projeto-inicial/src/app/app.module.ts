@@ -14,7 +14,8 @@ import { CadastroModule } from './pages/cadastro/cadastro.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CadastroModule
+    CadastroModule,
+
   ],
   bootstrap: [AppComponent]
 })

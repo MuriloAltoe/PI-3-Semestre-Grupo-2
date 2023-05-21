@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CadastroComponent } from './pages/cadastro/cadastro/cadastro.component';
+import { ContatoComponent } from './pages/contato/contato/contato.component';
+import { SobreComponent } from './pages/sobre/sobre/sobre.component';
 
 const routes: Routes = [
   {
@@ -16,6 +18,14 @@ const routes: Routes = [
   {
     path: 'cadastro',
     component: CadastroComponent,
+  },
+  {
+    path: 'contato',
+    component: ContatoComponent,
+  },
+  {
+    path: 'sobre',
+    component: SobreComponent,
   },
 ];
 
