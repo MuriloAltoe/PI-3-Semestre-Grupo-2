@@ -1,0 +1,33 @@
+.custom-shadow {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: white;
+  }
+
+.logo {
+  max-width: 100px;
+}
+
+a {
+  text-decoration: none;
+  color: #588157;
+
+  &:hover{
+    color:red;
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #588157;
+  border-radius:5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: black;
+
+}
