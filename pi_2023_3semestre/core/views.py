@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 import pymongo
+from pymongo import InsertOne
 
 # def showUser(request, id):
 #     conn = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -47,12 +48,28 @@ def usuario(request, id):
     db = conn["banco"]
     
     if request.method == 'POST':
+        collection = db["barraca"]
         data = json.loads(request.body)
 
-        print(data)
+        # print(data["usuario"])
         
-        # Fazer algo com os dados recebidos
-        # ...
+        dictRetorno = {   
+            "id"            : data["id"],
+            "email"         : data["email"],
+            'produtor'      : data['produtor'],
+            'senha'         : data['senha'],
+            'entrega'       : data['entrega'],
+
+            "cep"           : data["cep"],
+            "rua"           : data["rua"],
+            'cidade'        : data['cidade'],
+            'complemento'   : data['complemento'],
+            'bairro'        : data['bairro'],
+            'numeros'       : data['numeros'],
+            'itens_id'      : str(itens2)
+        }
+
+        collection.InsertOne(dictRetorno)
 
         return HttpResponse("Requisição POST processada com sucesso!")
     
@@ -107,14 +124,14 @@ def allItens(request):
 
         return HttpResponse(itens2)
 
-    elif request.method == 'POST':
-        pass
+    # elif request.method == 'POST':
+    #     pass
 
-    elif request.method == 'DELETE':
-        pass
+    # elif request.method == 'DELETE':
+    #     pass
 
-    elif request.method == 'PUT':
-        pass
+    # elif request.method == 'PUT':
+    #     pass
          
     else:
         return HttpResponse("Método não permitido. Use POST para enviar dados.")
@@ -145,7 +162,7 @@ def itens(request, id):
         # Fazer algo com os dados recebidos
         # ...
 
-        return HttpResponse(data)
+        return JsonResponse(data)
 
         pass
 

@@ -21,9 +21,9 @@ from core.views import usuario, itens, allItens
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('showUser/<str:id>', showUser)
-    path('usuario/<str:id>', usuario),
-    path('usuario/', usuario),
-    path('allItens/', allItens),
-    path('itens/<str:id>', itens),
+    path('usuario/', usuario), 
+    path('usuario/<str:id>', usuario), # pega o usuario baseado no id(pelo url)
+    path('allItens/', allItens), #serve pra pegar todos os items
+    path('itens/<str:id>', itens), #serve pra pegar os items especificos do usuario(pelo url)
     
 ]
