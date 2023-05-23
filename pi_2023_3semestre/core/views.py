@@ -7,38 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 import pymongo
 from pymongo import InsertOne
 
-# def showUser(request, id):
-#     conn = pymongo.MongoClient("mongodb://localhost:27017/")
-#     db = conn["banco"]
-#     collection = db["barraca"]
-#     usuario = list(collection.aggregate([{ "$match": { "id": id } }])) 
-#     # print(usuario)
-#     result2 = dict(usuario[0])
-
-#     collection = db["itens"]
-#     itens = list(collection.aggregate([{ "$match": { "id_items": id } }])) 
-#     itens2 = []
-#     for i in itens:
-#         itens2.append(i)
-#         # print(i)
-    
-
-#     dictRetorno = {   
-#         "id"            : result2["id"],
-#         "email"         : result2["email"],
-#         'produtor'      : result2['produtor'],
-#         'senha'         : result2['senha'],
-#         'entrega'       : result2['entrega'],
-
-#         "cep"           : result2["cep"],
-#         "rua"           : result2["rua"],
-#         'cidade'        : result2['cidade'],
-#         'complemento'   : result2['complemento'],
-#         'bairro'        : result2['bairro'],
-#         'numeros'       : result2['numeros'],
-#         'itens_id'      : str(itens2)
-#     }
-#     return JsonResponse(dictRetorno)
+@csrf_exempt
+def login(request ):
+    conn = conn = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = conn["banco"]
+    collection = db["usuarios"]
 
 
 @csrf_exempt

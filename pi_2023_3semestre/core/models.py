@@ -3,15 +3,11 @@ from djongo import models as djongo_models
 
 
 class Itens(djongo_models.Model):
-<<<<<<< HEAD
     nome = models.CharField(verbose_name="nome", max_length=100)
     preco = models.DecimalField(verbose_name="preco", max_digits=8, decimal_places=2)
     categoria = models.CharField(verbose_name="categoria", max_length=100)
     quantidade = models.IntegerField(verbose_name="quantidade")
-=======
     id_barraca = models.CharField(verbose_name='email_', unique=True, max_length=30)
-
->>>>>>> branch-show(get)
     class Meta:
         db_table = 'itens'
         
