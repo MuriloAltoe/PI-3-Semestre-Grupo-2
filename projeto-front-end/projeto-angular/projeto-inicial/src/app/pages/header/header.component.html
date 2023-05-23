@@ -1,0 +1,25 @@
+<header
+    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom">
+    <div class="col-md-3 mb-2 mb-md-0">
+        <img class="logo" src="../assets/img/logo.png" alt="">
+    </div>
+
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="#" class="nav-link px-2" [routerLink]="['home']">Home</a></li>
+        <li><a href="#" class="nav-link px-2"  [routerLink]="'/sobre'">Sobre</a></li>
+        <li><a href="#" class="nav-link px-2"  [routerLink]="'/contato'">contato</a></li>
+        <li><a href="#" class="nav-link px-2"></a></li>
+    </ul>
+
+    <div class="col-md-3 text-end" *ngIf="!logado">
+        <button type="button" class="btn btn-outline-success me-2">Entrar</button>
+        <button [routerLink]="['cadastro']" type="button" class="btn btn-success">Cadastrar-se</button>
+    </div>
+    <div class="col-md-3 text-end" *ngIf="logado">
+       
+    </div>
+    <div class="col-md-3 text-end" *ngIf="logado && produtor">
+        <button type="button" class="btn btn-outline-success me-2">Area do produtor</button>
+        <button type="button" class="btn btn-success">Sair </button>
+    </div>
+</header> 
