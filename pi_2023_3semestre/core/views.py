@@ -148,10 +148,13 @@ def itens(request, id):
         update_data = {}
         if 'nome' in data:
             update_data['nome'] = data['nome']
-        if 'email' in data:
-            update_data['email'] = data['email']
-        if 'senha' in data:
-            update_data['senha'] = data['senha']
+        if 'preco' in data:
+            update_data['preco'] = data['preco']
+        if 'categoria' in data:
+            update_data['categoria'] = data['categoria']
+        if 'quantidade' in data:
+            update_data['quantidade'] = data['quantidade']
+
 
         result = collection.update_one({'_id': usuario_id}, {'$set': update_data})
 
