@@ -159,9 +159,9 @@ def itens(request, id):
         result = collection.update_one({'_id': usuario_id}, {'$set': update_data})
 
         if result.modified_count > 0:
-            return JsonResponse({'message': 'Usuário atualizado com sucesso'})
+            return JsonResponse({'message': '>:D'})
         else:
-            return JsonResponse({'message': 'Falha ao atualizar o usuário'})
+            return JsonResponse({'message': '>:c'})
 
         pass
          
