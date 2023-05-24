@@ -142,7 +142,24 @@ def itens(request, id):
     elif request.method == 'DELETE':
         pass
 
+        data = request.PUT
+
     elif request.method == 'PUT':
+        update_data = {}
+        if 'nome' in data:
+            update_data['nome'] = data['nome']
+        if 'email' in data:
+            update_data['email'] = data['email']
+        if 'senha' in data:
+            update_data['senha'] = data['senha']
+
+        result = collection.update_one({'_id': usuario_id}, {'$set': update_data})
+
+        if result.modified_count > 0:
+            return JsonResponse({'message': 'Usuário atualizado com sucesso'})
+        else:
+            return JsonResponse({'message': 'Falha ao atualizar o usuário'})
+
         pass
          
     else:
