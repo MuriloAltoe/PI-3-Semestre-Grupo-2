@@ -1,5 +1,7 @@
 from django.shortcuts import render
 import json
+import jwt
+from datetime import datetime, timedelta
 from django.http import HttpResponse, JsonResponse
 # from .models import Usuario, Barraca, Itens
 from django.views.decorators.csrf import csrf_exempt
@@ -7,17 +9,49 @@ from django.views.decorators.csrf import csrf_exempt
 import pymongo
 from pymongo import InsertOne
 
+localhost="mongodb://localhost:27017/"
+
 @csrf_exempt
-def login(request ):
-    conn = conn = pymongo.MongoClient("mongodb://localhost:27017/")
-    db = conn["banco"]
-    collection = db["usuarios"]
+def login(request):
+
+    if request.method == 'POST':
+        conn = conn = pymongo.MongoClient(localhost)
+        db = conn["banco"]
+        collection = db["barraca"]
+        data = json.loads(request.body)
+
+        result = collection.find({
+            "email" : data["email"],
+            "senha" : data["senha"],
+        })
+        # find = list(result)
+
+        # print(dict(find[0]))
+
+        if result.count() > 0:
+            payload = {
+                'user_id': result[0]['id'],
+                'exp': datetime.utcnow() + timedelta(minutes=15)
+            }
+            # Gera o tolken
+            secret_key = 'stardewgreen'
+            token = jwt.encode(payload, secret_key, algorithm='HS256')
+
+            response = HttpResponse(token)
+
+            response["x-access-token"] = token
+
+            return response
+        else:
+            return HttpResponse("usuario não encontrado")
+
+        return JsonResponse(dict(find[0]))
 
 
 @csrf_exempt
 def usuario(request, id):
 
-    conn = pymongo.MongoClient("mongodb://localhost:27017/")
+    conn = pymongo.MongoClient(localhost)
     db = conn["banco"]
     
     if request.method == 'POST':
@@ -80,7 +114,7 @@ def usuario(request, id):
     
 @csrf_exempt
 def allItens(request):
-    conn = pymongo.MongoClient("mongodb://localhost:27017/")
+    conn = pymongo.MongoClient(localhost)
     db = conn["banco"]
 
     if request.method == 'GET':
@@ -111,7 +145,7 @@ def allItens(request):
 
 @csrf_exempt
 def itens(request, id):
-    conn = pymongo.MongoClient("mongodb://localhost:27017/")
+    conn = pymongo.MongoClient(localhost)
     db = conn["banco"]
 
     if request.method == 'GET':
