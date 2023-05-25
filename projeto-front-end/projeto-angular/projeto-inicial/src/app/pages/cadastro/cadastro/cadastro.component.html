@@ -16,13 +16,13 @@
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-6">
-                        <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Digite seu email">
-                        <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['required']" text="Email é obrigatório">
+                        <label for="exampleInputEmail1" class="form-label">E-mail</label>
+                        <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Digite seu e-mail">
+                        <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['required']" text="E-mail é obrigatório">
                         </app-vmessage>
-                        <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['email']" text="Email inválido">
+                        <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['email']" text="E-mail inválido">
                         </app-vmessage>
-                        <app-vmessage text="Email já cadastrado" *ngIf="cadastroForm.get('email')?.errors?.['userNameTaken']">
+                        <app-vmessage text="E-mail já cadastrado" *ngIf="cadastroForm.get('email')?.errors?.['userNameTaken']">
                         </app-vmessage>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         </app-vmessage>
                     </div>          
                     <div class="mb-3 col-4">
-                        <label for="cep" class="form-label">CPE</label>
+                        <label for="cep" class="form-label">CEP</label>
                         <input  formControlName="cep" type="text" class="form-control" id="cep" placeholder="Digite seu cep">
                         <app-vmessage *ngIf="cadastroForm.get('cep')?.errors?.['required']" text="Cep é obrigatório">
                         </app-vmessage>
@@ -55,7 +55,7 @@
                 </div> 
                 <div class="row">
                     <div class="mb-3 col-4">
-                        <label for="cidade" class="form-label">cidade</label>
+                        <label for="cidade" class="form-label">Cidade</label>
                         <input  formControlName="cidade" type="text" class="form-control" id="cidade" placeholder="Digite sua cidade">
                         <app-vmessage *ngIf="cadastroForm.get('cidade')?.errors?.['required']" text="Cidade é obrigatório">
                         </app-vmessage>
@@ -67,7 +67,7 @@
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-4">
-                        <label for="numero" class="form-label">numero</label>
+                        <label for="numero" class="form-label">Número</label>
                         <input  formControlName="numero" type="text" class="form-control" id="numero" placeholder="Digite o numero">
                         <app-vmessage *ngIf="cadastroForm.get('numero')?.errors?.['required']" text="Número é obrigatório">
                         </app-vmessage>
@@ -88,7 +88,7 @@
                 <div class="row"  *ngIf="isProdutor">
                     <div class="mb-3 col-6">
                         <label for="telefone" class="form-label">Telefone</label>
-                        <input  formControlName="telefone" type="text" class="form-control" id="telefone" placeholder="Digite sua rua">
+                        <input  formControlName="telefone" type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
                     </div>
                     <div class="mb-3 col-6">
                         <label for="entrega" class="form-label">Disponibilidade para entrega</label>
