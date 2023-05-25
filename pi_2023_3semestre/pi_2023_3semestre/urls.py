@@ -26,4 +26,6 @@ urlpatterns = [
     path('allItens/', allItens), #serve pra pegar todos os items
     path('itens/<str:id>', itens), #serve pra pegar os items especificos do usuario(pelo url)
     
+    # path('itens/<str:id>', itens), #serve pra pegar os items especificos do usuario(pelo url)
+
 ]

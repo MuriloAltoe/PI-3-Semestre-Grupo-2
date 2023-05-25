@@ -75,9 +75,13 @@ def usuario(request, id):
         }
         return JsonResponse(dictRetorno)
          
+
+
+
+
     else:
         return HttpResponse("Método não permitido. Use POST para enviar dados.")
-    
+
 @csrf_exempt
 def allItens(request):
     conn = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -145,6 +149,10 @@ def itens(request, id):
         data = request.PUT
 
     elif request.method == 'PUT':
+        collection = db["itens"]
+        data = json.loads(request.body)
+
+
         update_data = {}
         if 'nome' in data:
             update_data['nome'] = data['nome']
@@ -155,9 +163,7 @@ def itens(request, id):
         if 'quantidade' in data:
             update_data['quantidade'] = data['quantidade']
 
-
-        result = collection.update_one({'_id': usuario_id}, {'$set': update_data})
-
+        result = collection.update_one({'nome': id}, {'$set': update_data})
         if result.modified_count > 0:
             return JsonResponse({'message': '>:D'})
         else:
