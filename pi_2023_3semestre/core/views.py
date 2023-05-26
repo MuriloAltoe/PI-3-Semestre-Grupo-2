@@ -74,8 +74,8 @@ def usuario(request, id):
             'itens_id'      : str(itens2)
         }
         return JsonResponse(dictRetorno)
-        
-      
+         
+
 
     elif request.method == 'PUT':
         collection = db["itens"]
@@ -179,6 +179,7 @@ def itens(request, id):
     elif request.method == 'DELETE':
         pass
 
+        data = request.PUT
 
     elif request.method == 'PUT':
         collection = db["itens"]
