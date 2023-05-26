@@ -74,9 +74,42 @@ def usuario(request, id):
             'itens_id'      : str(itens2)
         }
         return JsonResponse(dictRetorno)
-         
+        
+      
+
+    elif request.method == 'PUT':
+        collection = db["itens"]
+        data = json.loads(request.body)
 
 
+        update_data = {}
+        if 'email' in data:
+            update_data['email'] = data['email']
+        if 'rua' in data:
+            update_data['rua'] = data['produtor']
+        if 'senha' in data:
+            update_data['senha'] = data['senha']
+        if 'entrega' in data:
+            update_data['entrega'] = data['entrega']
+
+        if 'cep' in data:
+            update_data['cep'] = data['cep']
+        if 'cidade' in data:
+            update_data['cidade'] = data['cidade']
+        if 'complemento' in data:
+            update_data['complemento'] = data['complemento']
+        if 'bairro' in data:
+            update_data['bairro'] = data['bairro']
+        if 'numeros' in data:
+            update_data['numeros'] = data['numeros']
+
+        result = collection.update_one({'nome': id}, {'$set': update_data})
+        if result.modified_count > 0:
+            return JsonResponse({'message': '>:D'})
+        else:
+            return JsonResponse({'message': '>:c'})
+
+        pass
 
 
     else:
@@ -146,7 +179,6 @@ def itens(request, id):
     elif request.method == 'DELETE':
         pass
 
-        data = request.PUT
 
     elif request.method == 'PUT':
         collection = db["itens"]
