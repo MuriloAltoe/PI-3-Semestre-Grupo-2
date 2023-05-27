@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CadastroModule } from './pages/cadastro/cadastro.module';
+import { FooterModule } from './pages/footer/footer.module';
+import { HeaderModule } from './pages/header/header.module';
+import { UsuarioModule } from './pages/usuario/usuario.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { CadastroModule } from './pages/cadastro/cadastro.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CadastroModule
+    CadastroModule,
+    FooterModule,
+    HeaderModule,
+    UsuarioModule
   ],
   bootstrap: [AppComponent]
 })
