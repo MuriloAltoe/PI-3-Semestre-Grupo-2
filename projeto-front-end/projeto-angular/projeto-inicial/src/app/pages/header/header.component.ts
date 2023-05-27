@@ -23,6 +23,17 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.logado = this.userService.isLogged();
+    this.userService.getUser().subscribe({
+      next: (res) => {
+        if(res?.tipo === 'produtor'){
+          this.tipoUsuario = 'Area do Produtor';
+        } else{
+          this.tipoUsuario = 'Area do Usuário';
+        }
+      }
+    });
+
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       senha: ['', Validators.required],
@@ -38,11 +49,7 @@ export class HeaderComponent implements OnInit {
         this.logado = true;
         this.router.navigate(['home']);
         document.getElementById('closeModal')?.click();
-        if(res.body?.tipo === 'produtor'){
-          this.tipoUsuario = 'Area do Produtor';
-        } else{
-          this.tipoUsuario = 'Area do Usuário';
-        }
+       
       },
       error: (err) => {
         this.loginForm.reset();

@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CadastroModule } from './pages/cadastro/cadastro.module';
 import { FooterModule } from './pages/footer/footer.module';
 import { HeaderModule } from './pages/header/header.module';
+import { UsuarioModule } from './pages/usuario/usuario.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HeaderModule } from './pages/header/header.module';
     CadastroModule,
     FooterModule,
     HeaderModule,
+    UsuarioModule
   ],
   bootstrap: [AppComponent]
 })

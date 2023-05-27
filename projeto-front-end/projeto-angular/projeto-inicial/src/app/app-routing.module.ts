@@ -4,6 +4,8 @@ import { CadastroComponent } from './pages/cadastro/cadastro/cadastro.component'
 import { HomeComponent } from './pages/home/home/home.component';
 import { ContatoComponent } from './pages/contato/contato/contato.component';
 import { SobreComponent } from './pages/sobre/sobre/sobre.component';
+import { UsuarioComponent } from './pages/usuario/usuario/usuario/usuario.component';
+import { AuthGuard } from './core/services/auth/auth-guard';
 
 
 const routes: Routes = [
@@ -27,6 +29,11 @@ const routes: Routes = [
   {
     path: 'sobre',
     component: SobreComponent,
+  },
+  {
+    path: 'usuario',
+    component: UsuarioComponent,
+    canActivate: [AuthGuard]
   },
 ];
 
