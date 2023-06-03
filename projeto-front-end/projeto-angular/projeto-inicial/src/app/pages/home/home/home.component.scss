@@ -1,0 +1,105 @@
+.barraca {
+  background-image: url(../../../../assets/img/fundo_barraca.jpg);
+  background-size: cover;
+  object-fit: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+}
+
+.produtos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 250px;
+  position: absolute;
+  gap:10px;
+  padding-left: 40px;
+  padding-right: 20px;
+}
+
+.produtor {
+  margin-top: 67%;
+
+  margin-left: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .nome {
+    color:white;
+    font-weight: 600;
+ 
+
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.699);
+  }
+
+  .informacoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+
+
+    .entrega {
+      color:white;
+      font-weight: 600;
+      font-size: 15px; 
+      line-height: 3px;
+      margin-top: 5px;
+
+
+      .pergunta{
+        font-size: 15px;
+        font-weight: bold;
+        color:#588157;
+       
+      }
+
+      .resposta{
+        font-size: 12px;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.788);
+      }
+
+    }
+
+    .contato {
+      color:white;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 3px;
+      margin-top: 5px;
+
+
+      .pergunta{
+        font-size: 15px;
+        font-weight: bold;
+        color:#588157;
+      }
+
+      .resposta{
+        font-size: 12px;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.788);
+      }
+    }
+  }
+}
+
+
+
+.name-produto {
+  font-size: 15px;
+}
+
+.price {
+  font-size: 12px;
+}
+
+.fundo {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  position: relative;
+}
