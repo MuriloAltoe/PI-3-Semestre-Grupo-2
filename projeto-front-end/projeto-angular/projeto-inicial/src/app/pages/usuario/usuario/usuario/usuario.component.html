@@ -1,6 +1,7 @@
-<div class="row mt-4 p-4">
+<div class="container">
+  <div class="row mt-4 p-4">
     <div class="col-6">
-        <h1>Ola</h1>
+        <h1>Bem vindo, Witer</h1>
 
     </div>
     <div class="col-6">
@@ -11,7 +12,7 @@
                         <h2>Informações pessoais</h2>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-outline-success">Editar <i class="fa fa-edit"></i></button>
+                        <button class="btn btn-outline-success"  data-bs-toggle="modal" data-bs-target="#modalEditarPerfil">Editar <i class="fa fa-edit"></i></button>
                     </div>
                 </div>
                 <div class="row">
@@ -26,4 +27,163 @@
               </div>
         </div>
     </div>
+    <div class="col-12 mt-5">
+      
+      <div >
+       <a data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" class="d-flex align-items-center"  style="gap:10px; text-decoration: none;"> 
+        <img class="lift-lg" src="../../../../../assets/img/icon-add.svg" width="50" alt="">
+        <p style="color:#588157; margin-top: 30px;">ADICIONAR NOVO PRODUTO</p>
+      </a>
+      </div>
+      <h4 class="text-center mb-4" style="letter-spacing: 5px;">LISTA DE PRODUTOS</h4>
+      <!-- Tabela -->
+      <table id="tabela" class="table table-striped table-bordered dt-responsive nowrap">  
+          <thead>
+              <tr>
+              <th> Nome</th>
+              <th> Categoria </th>
+              <th> Quantidade </th>
+              <th> Valor </th>
+              <th class="th-table"> Editar </th>
+              <th class="th-table"> Deletar </th>
+              </tr>
+          </thead><!-- /thead -->
+          <!-- tbody -->
+          <tbody>
+
+           
+              <tr>
+                <!-- Aqui vem um loop para pegar todos os produtos -->
+                  <td>Exemplo</td>
+                  <td>Exemplo</td>
+                  <td>10</td>
+                  <td>R$ 20,63 </td>
+                 
+                  <td class="align-middle text-center" style="width: 50px;">
+                    <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalEditarProduto">
+                      <img src="../../../../../assets/img/icon-editar.png" width="30" alt="icone de edição">
+                    </button>
+                  </td>
+
+                  <td class="align-middle text-center" style="width: 50px;">
+                    <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalDeletarProduto">
+                      <img src="../../../../../assets/img/icon-excluir.png" width="30" alt="icone de edição">
+                    </button>
+                  </td>
+               <!-- Aqui fecha o looop -->
+              </tr>
+    
+
+          </tbody><!-- /tbody -->
+          
+      </table> 
+      <!-- End tabela -->
+
+       <!-- Modal de adicionar produto -->
+       <div class="modal fade" id="modalAdicionarProduto" tabindex="-1" aria-labelledby="modalAdicionarProdutoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 title-edit" id="exampleModalLabel">Adicionar produto</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+            <div class="modal-body">
+                  <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
+                    <div class="mb-3">
+                      <label for="exampleInputText1" class="form-label">Nome</label>
+                      <input type="text" class="form-control" id="nome" name="nome" aria-describedby="Nome">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputText2" class="form-label">Categoria</label>
+                      <input type="text" class="form-control" id="categoria" name="categoria" aria-describedby="Categoria">
+                    </div>
+                  </div>
+                  <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
+                    <div class="mb-3">
+                      <label for="exampleInputNumber1" class="form-label">Quantidade</label>
+                      <input type="number" class="form-control" id="quantidade" name="quantidade" aria-describedby="Quantidade">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputNumber2" class="form-label">Valor</label>
+                      <input type="number" step="any" class="form-control" id="valor" name="valor">
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-star lift-lg" value="ADICIONAR PRODUTO">Adicionar</button>
+              <button type="button" class="btn btn-star-dark lift-lg" data-bs-dismiss="modal">Fechar</button>             
+            </div>
+           </form>
+          </div>
+        </div>
+      </div>  
+      <!-- End modal de editar produto -->
+
+      <!-- Precisa vir preenchido -->
+       <div class="modal fade" id="modalEditarProduto" tabindex="-1" aria-labelledby="modalEditarProdutoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 title-edit" id="exampleModalLabel">Editar produto</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+              <div class="modal-body">
+                    <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
+                      <div class="mb-3">
+                        <label for="exampleInputText1" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="nome" aria-describedby="Nome">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputText2" class="form-label">Categoria</label>
+                        <input type="text" class="form-control" id="categoria" name="categoria" aria-describedby="Categoria">
+                      </div>
+                    </div>
+                    <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
+                      <div class="mb-3">
+                        <label for="exampleInputNumber1" class="form-label">Quantidade</label>
+                        <input type="number" class="form-control" id="quantidade" name="quantidade" aria-describedby="Quantidade">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputNumber2" class="form-label">Valor</label>
+                        <input type="number" step="any" class="form-control" id="valor" name="valor">
+                      </div>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-star lift-lg" value="EDITAR PRODUTO">Editar</button>
+                <button type="button" class="btn btn-star-dark lift-lg" data-bs-dismiss="modal">Fechar</button>             
+              </div>
+             </form>
+          </div>
+        </div>
+      </div>  
+     
+       <!-- Modal de deletar produto -->
+       <div class="modal fade" id="modalDeletarProduto" tabindex="-1" aria-labelledby="modalDeletarProdutoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 title-edit" id="exampleModalLabel">Atenção</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+              <div class="modal-body">
+                  <h5 class="text-center title-modal-apagar">Você confirma a exclusão deste documento?</h5>
+                  <p class="text-center subtitle-modal-apagar">Todos as informações, nome, categoria, 
+                    quantidade e  valor serão apagadas !</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-star lift-lg" value="EDITAR PRODUTO">Apagar</button>
+                <button type="button" class="btn btn-danger lift-lg" data-bs-dismiss="modal">Cancelar</button>             
+              </div>
+             </form>
+          </div>
+        </div>
+      </div>  
+      <!-- End modal de deletar produto -->
+
+    </div>
+</div>
 </div>
