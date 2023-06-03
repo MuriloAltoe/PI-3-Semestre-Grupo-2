@@ -13,7 +13,6 @@ localhost="mongodb://localhost:27017/"
 
 @csrf_exempt
 def login(request):
-
     if request.method == 'POST':
         conn = conn = pymongo.MongoClient(localhost)
         db = conn["banco"]
@@ -24,13 +23,19 @@ def login(request):
             "email" : data["email"],
             "senha" : data["senha"],
         })
-        # find = list(result)
+        
+        count = 0
 
-        # print(dict(find[0]))
+        # print(list(result)[0]['id'])
 
-        if result.count() > 0:
+        for i in list(result):
+            count = i
+        # print(result[0])
+
+        print(count)
+        if count != None:
             payload = {
-                'user_id': result[0]['id'],
+                'user_id': i['id'],
                 'exp': datetime.utcnow() + timedelta(minutes=15)
             }
             # Gera o tolken
@@ -54,11 +59,9 @@ def usuario(request, id):
     conn = pymongo.MongoClient(localhost)
     db = conn["banco"]
     
-    if request.method == 'POST':
+    if   request.method == 'POST':
         collection = db["barraca"]
         data = json.loads(request.body)
-
-        # print(data["usuario"])
         
         dictRetorno = {   
             "id"            : data["id"],
@@ -108,7 +111,39 @@ def usuario(request, id):
             'itens_id'      : str(itens2)
         }
         return JsonResponse(dictRetorno)
-         
+
+    elif request.method == 'PUT':
+        collection = db["barraca"]
+        data = json.loads(request.body)
+
+        update_data = {}
+        if 'email' in data:
+            update_data['email'] = data['email']
+        if 'rua' in data:
+            update_data['rua'] = data['produtor']
+        if 'senha' in data:
+            update_data['senha'] = data['senha']
+        if 'entrega' in data:
+            update_data['entrega'] = data['entrega']
+
+        if 'cep' in data:
+            update_data['cep'] = data['cep']
+        if 'cidade' in data:
+            update_data['cidade'] = data['cidade']
+        if 'complemento' in data:
+            update_data['complemento'] = data['complemento']
+        if 'bairro' in data:
+            update_data['bairro'] = data['bairro']
+        if 'numeros' in data:
+            update_data['numeros'] = data['numeros']
+
+        result = collection.update_one({'id': id}, {'$set': update_data})
+        
+        if result.modified_count > 0:
+            return JsonResponse({'message': '>:D'})
+        else:
+            return JsonResponse({'message': '>:c'})
+
     else:
         return HttpResponse("Método não permitido. Use POST para enviar dados.")
     
@@ -173,11 +208,30 @@ def itens(request, id):
 
         pass
 
-    elif request.method == 'DELETE':
-        pass
+    # elif request.method == 'DELETE':
+    #     pass
 
     elif request.method == 'PUT':
-        pass
+        collection = db["itens"]
+        data = json.loads(request.body)
+
+
+        update_data = {}
+        if 'nome' in data:
+            update_data['nome'] = data['nome']
+        if 'preco' in data:
+            update_data['preco'] = data['preco']
+        if 'categoria' in data:
+            update_data['categoria'] = data['categoria']
+        if 'quantidade' in data:
+            update_data['quantidade'] = data['quantidade']
+
+        result = collection.update_one({'nome': id}, {'$set': update_data})
+        if result.modified_count > 0:
+            return JsonResponse({'message': '>:D'})
+        else:
+            return JsonResponse({'message': '>:c'})
+
          
     else:
         return HttpResponse("Método não permitido. Use POST para enviar dados.")
