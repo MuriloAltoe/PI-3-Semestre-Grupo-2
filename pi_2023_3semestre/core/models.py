@@ -1,20 +1,19 @@
 from django.db import models
-from djongo import models as djongo_models
-
 
 class Itens(djongo_models.Model):
     nome = models.CharField(verbose_name="nome", max_length=100)
     preco = models.DecimalField(verbose_name="preco", max_digits=8, decimal_places=2)
     categoria = models.CharField(verbose_name="categoria", max_length=100)
     quantidade = models.IntegerField(verbose_name="quantidade")
-    id_barraca = models.CharField(verbose_name='email_', unique=True, max_length=30)
+    id_barraca = models.CharField(verbose_name='id_barraca', unique=True, max_length=30)
     class Meta:
         db_table = 'itens'
         
         
 class Usuario(djongo_models.Model):
     email = models.EmailField(verbose_name="email",unique=True)
-    produtor = models.BooleanField(verbose_name="podutor", )
+    nome = models.CharField(verbose_name="nome", max_length=100)
+    tipo = models.BooleanField(verbose_name="tipo", )
     senha = models.CharField(verbose_name="senha", max_length=100)
     telefone = models.CharField(verbose_name="telefone", max_length=100)
     entrega = models.BooleanField(verbose_name="entrega", default=False)
@@ -28,4 +27,4 @@ class Usuario(djongo_models.Model):
     numero = models.IntegerField(verbose_name="numero")
     
     class Meta:
-        db_table = 'usuario'
+        db_table = 'barraca'

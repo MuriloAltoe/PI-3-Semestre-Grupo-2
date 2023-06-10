@@ -8,6 +8,7 @@ import { CadastroModule } from './pages/cadastro/cadastro.module';
 import { FooterModule } from './pages/footer/footer.module';
 import { HeaderModule } from './pages/header/header.module';
 import { UsuarioModule } from './pages/usuario/usuario.module';
+import { HomeModule } from './pages/home/home.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UsuarioModule } from './pages/usuario/usuario.module';
     CadastroModule,
     FooterModule,
     HeaderModule,
-    UsuarioModule
+    UsuarioModule,
+    HomeModule
   ],
   bootstrap: [AppComponent]
 })

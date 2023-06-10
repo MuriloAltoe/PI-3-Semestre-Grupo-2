@@ -1,15 +1,18 @@
+from bson import ObjectId
 from django.shortcuts import render
 import json
 import jwt
 from datetime import datetime, timedelta
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
+
 # from .models import Usuario, Barraca, Itens
 from django.views.decorators.csrf import csrf_exempt
 
 import pymongo
 from pymongo import InsertOne
 
-localhost="mongodb://localhost:27017/"
+localhost = "mongodb://localhost:27017/"
+
 
 @csrf_exempt
 def login(request):
@@ -20,109 +23,117 @@ def login(request):
         collection = db["barraca"]
         data = json.loads(request.body)
 
-        result = collection.find({
-            "email" : data["email"],
-            "senha" : data["senha"],
-        })
-        # find = list(result)
-
-        # print(dict(find[0]))
+        result = collection.find({"email": data["email"]})
 
         if result.count() > 0:
-            payload = {
-                'user_id': result[0]['id'],
-                'exp': datetime.utcnow() + timedelta(minutes=15)
-            }
-            # Gera o tolken
-            secret_key = 'stardewgreen'
-            token = jwt.encode(payload, secret_key, algorithm='HS256')
+            print(result[0])
+            if (result[0]['senha'] == data['senha']):
 
-            response = HttpResponse(token)
+                payload = {
+                    'id':  str(result[0]['_id']),
+                    'exp': datetime.utcnow() + timedelta(minutes=15)
+                }
 
-            response["x-access-token"] = token
+                print(payload)
+                # Gera o tolken
+                secret_key = 'stardewgreen'
+                token = jwt.encode(payload, secret_key, algorithm='HS256')
 
-            return response
+                response = HttpResponse(token)
+
+                response["x-access-token"] = token
+
+                return response
+            else:
+                response = HttpResponse("Acesso não autorizado.")
+                response.status_code = 401
+                return response
         else:
-            return HttpResponse("usuario não encontrado")
-
-        return JsonResponse(dict(find[0]))
+            return HttpResponseNotFound("usuario não encontrado")
 
 
 @csrf_exempt
-def usuario(request, id):
+def usuarioCadastro(request):
 
     conn = pymongo.MongoClient(localhost)
     db = conn["banco"]
-    
+
     if request.method == 'POST':
         collection = db["barraca"]
         data = json.loads(request.body)
 
-        # print(data["usuario"])
-        
-        dictRetorno = {   
-            "id"            : data["id"],
-            "email"         : data["email"],
-            'produtor'      : data['produtor'],
-            'senha'         : data['senha'],
-            'entrega'       : data['entrega'],
-
-            "cep"           : data["cep"],
-            "rua"           : data["rua"],
-            'cidade'        : data['cidade'],
-            'complemento'   : data['complemento'],
-            'bairro'        : data['bairro'],
-            'numeros'       : data['numeros'],
-            'itens_id'      : str(itens2)
+        dictRetorno = {
+            "email": data["email"],
+            'nome': data["nome"],
+            'tipo': data['tipo'],
+            'senha': data['senha'],
+            'entrega': data['entrega'],
+            "cep": data["cep"],
+            "rua": data["rua"],
+            'cidade': data['cidade'],
+            'complemento': data['complemento'],
+            'bairro': data['bairro'],
+            'numeros': data['numeros'],
+            'estado': data['estado'],
+            'telefone': data['telefone']
         }
+        
+        try:
+            result = collection.insert_one(data)
 
-        collection.InsertOne(dictRetorno)
+            if result.inserted_id:
+                return HttpResponse("Cadastro realizada com sucesso!")
+            else:
+                return HttpResponse("Falha no cadastro.")
+        except Exception as e:
+            return HttpResponse(f"Erro durante a inserção: {str(e)}")
+           
 
-        return HttpResponse("Requisição POST processada com sucesso!")
-    
-    elif request.method == 'GET':
+
+@csrf_exempt
+def usuario(request, id):
+    conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
+    if request.method == 'GET':
 
         collection = db["barraca"]
-        usuario = list(collection.aggregate([{ "$match": { "id": id } }])) 
+        usuario = list(collection.aggregate([{"$match": {"_id":  ObjectId(id)}}]))
         result2 = dict(usuario[0])
-
+        print(usuario)
         collection = db["itens"]
-        itens = list(collection.aggregate([{ "$match": { "id_items": id } }])) 
+        itens = list(collection.aggregate([{"$match": {"id_usuario": id}}]))
         itens2 = []
         for i in itens:
-            itens2.append(i)       
+            itens2.append(i)
 
-        dictRetorno = {   
-            "id"            : result2["id"],
-            "email"         : result2["email"],
-            'produtor'      : result2['produtor'],
-            'senha'         : result2['senha'],
-            'entrega'       : result2['entrega'],
-
-            "cep"           : result2["cep"],
-            "rua"           : result2["rua"],
-            'cidade'        : result2['cidade'],
-            'complemento'   : result2['complemento'],
-            'bairro'        : result2['bairro'],
-            'numeros'       : result2['numeros'],
-            'itens_id'      : str(itens2)
+        dictRetorno = {
+            "id": str(result2['_id']),
+            "email": result2["email"],
+            'tipo': result2['tipo'],
+            'senha': result2['senha'],
+            'entrega': result2['entrega'],
+            'estado': result2['estado'],
+            "cep": result2["cep"],
+            "rua": result2["rua"],
+            'cidade': result2['cidade'],
+            'complemento': result2['complemento'],
+            'bairro': result2['bairro'],
+            'numeros': result2['numeros'],
+            'telefone': result2['telefone'],
+            'itens': str(itens2)
         }
         return JsonResponse(dictRetorno)
-         
-    else:
-        return HttpResponse("Método não permitido. Use POST para enviar dados.")
-    
+
+
 @csrf_exempt
 def allItens(request):
     conn = pymongo.MongoClient(localhost)
     db = conn["banco"]
 
     if request.method == 'GET':
-
         collection = db["itens"]
-
-        itens = list(collection.aggregate([])) 
-
+        itens = list(collection.aggregate([]))
         itens2 = []
         for i in itens:
             itens2.append(i)
@@ -130,18 +141,6 @@ def allItens(request):
         print(itens2)
 
         return HttpResponse(itens2)
-
-    # elif request.method == 'POST':
-    #     pass
-
-    # elif request.method == 'DELETE':
-    #     pass
-
-    # elif request.method == 'PUT':
-    #     pass
-         
-    else:
-        return HttpResponse("Método não permitido. Use POST para enviar dados.")
 
 @csrf_exempt
 def itens(request, id):
@@ -152,7 +151,7 @@ def itens(request, id):
 
         collection = db["itens"]
 
-        itens = list(collection.aggregate([{ "$match": { "id_items": id } }])) 
+        itens = list(collection.aggregate([{"$match": {"id_items": id}}]))
 
         itens2 = []
         for i in itens:
@@ -165,7 +164,7 @@ def itens(request, id):
         data = json.loads(request.body)
 
         print(data)
-        
+
         # Fazer algo com os dados recebidos
         # ...
 
@@ -178,6 +177,6 @@ def itens(request, id):
 
     elif request.method == 'PUT':
         pass
-         
+
     else:
         return HttpResponse("Método não permitido. Use POST para enviar dados.")

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VmessageComponent } from './vmessage.component';
+import { BarracaComponent } from './barraca.component';
 
-describe('VmessageComponent', () => {
-  let component: VmessageComponent;
-  let fixture: ComponentFixture<VmessageComponent>;
+describe('BarracaComponent', () => {
+  let component: BarracaComponent;
+  let fixture: ComponentFixture<BarracaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VmessageComponent ]
+      declarations: [ BarracaComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VmessageComponent);
+    fixture = TestBed.createComponent(BarracaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

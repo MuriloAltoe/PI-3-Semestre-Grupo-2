@@ -1,32 +1,244 @@
-<div class="container">
-  <div class="row mt-4 p-4">
-    <div class="col-6">
-        <h1>Bem vindo, Witer</h1>
+<div class="row mt-5 pt-5 w-100 m-0">
+    <div class="col-5 mt-5" >
+        <div class="row mt-5">
+             <h1>Bem Vindo(a) {{usuarioNome}}</h1>
+            <p>Aqui você encontra informações sobre seu perfil</p>
+        </div>
+       
+        <div class="row mt-5" *ngIf="!isProdutor">
+             <h5>NAVEGUE PELO QUE TEMOS E MELHOR</h5>
+            <p>Conectando pessoas à natureza através de 
+            escolhas saudáveis e sustentáveis.</p>
+        </div>
+        <div class="row mt-5" *ngIf="isProdutor">
+            <h5>NAVEGUE PELO QUE TEMOS E MELHOR</h5>
+           <p>Veja quais os produtos mais procurados do mercado e
+            comece a vender mais.</p>
+       </div>
 
+        <div class="row mt-5 w-100" *ngIf="!isProdutor">
+            <button type="button" [routerLink]="['/home']" class="btn btn-success m-0">CONFIRA OS PRODUTOS QUE ESTÃO AO SEU ALCANCE</button>
+        </div>
+       
+        <div class="row mt-5 w-100" *ngIf="isProdutor">
+            <button type="button"  class="btn btn-success m-0">TENHA ACESSO A RELATÓRIOS PESSOAIS</button>
+        </div>
     </div>
-    <div class="col-6">
-        <div class="card">
+    <div class="col-7">
+        <div class="card p-4">
             <div class="card-body">
                 <div class="row">
                     <div class="col-9">
                         <h2>Informações pessoais</h2>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-outline-success"  data-bs-toggle="modal" data-bs-target="#modalEditarPerfil">Editar <i class="fa fa-edit"></i></button>
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Editar <i class="fa fa-edit"></i></button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <h6 class="m-0">Nome:</h6>
-                        <p>Witer</p>
+                        <p>{{user?.nome}}</p>
+                        <h6 class="m-0">E-mail:</h6>
+                        <p>{{user?.email}}</p>
+                        <h6 class="m-0">Senha:</h6>
+                        <p>***************</p>
+                        <h6 class="m-0">CEP:</h6>
+                        <p>{{user?.cep}}</p>
+                    </div>
+                    <div class="col-6" style="    align-self: center; padding-left: 13%;                   ">
+                        <i class="fa fa-user-circle" style="font-size: 110px; " aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h6 class="m-0">Estado:</h6>
+                        <p>{{user?.estado}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Cidade:</h6>
+                        <p>{{user?.cidade}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Bairro:</h6>
+                        <p>{{user?.bairro}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h6 class="m-0">Número:</h6>
+                        <p>{{user?.numero}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Rua:</h6>
+                        <p>{{user?.rua}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Complemento:</h6>
+                        <p>{{user?.complemento}}</p>
+                    </div>
+                </div>  
+                <div class="row" *ngIf="isProdutor">
+                    <div class="col-6">
+                        <h6 class="m-0">Telefone:</h6>
+                        <p>{{user?.telefone}}</p>
                     </div>
                     <div class="col-6">
-
+                        <h6 class="m-0">Disponibilidade para entrega:</h6>
+                        <p>{{entrega}}</p>
                     </div>
                 </div>
               </div>
+            
         </div>
     </div>
+</div>
+<div class="row mt-5">
+    <div class="col-1">
+        <i class="fa fa-lightbulb-o" aria-hidden="true" style="font-size: 70px;"></i>
+    </div>
+    <div class="col-8" *ngIf="isProdutor">
+        <p> Você sabia que os alimentos orgânicos passam por um 
+            processo de certificação rigoroso? 
+            Os produtores precisam atender a uma série de requisitos e
+            seguir diretrizes específicas para garantir a qualidade orgânica de seus produtos.</p>
+    </div>
+    <div class="col-8" *ngIf="!isProdutor">
+        <p>Sabia que os alimentos orgânicos contribuem para a preservação da biodiversidade? 
+            Ao adotar práticas agrícolas sustentáveis, como o uso de culturas diversificadas e a proteção 
+            de habitats naturais, os produtores orgânicos ajudam a manter o equilíbrio ecológico, 
+            favorecendo a sobrevivência de espécies de plantas e animais em  seus ambientes naturais.</p>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop2Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center w-100" id="staticBackdrop2Label">Login</h1>
+          <button type="button" id="closeModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+        </div> 
+        <form  [formGroup]="cadastroForm" (submit)="cadastrar()" class="modal-edit">
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input  formControlName="nome" type="text" class="form-control" id="nome" placeholder="Digite seu nome completo">
+                    <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['required']" text="Nome é obrigatório">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['minlength']" text="O campo deve ter no mínimo 2 caracteres">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['maxlength']" text="O campo deve ter no máximo 50 caracteres">
+                    </app-vmessage>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="exampleInputEmail2" class="form-label">E-mail</label>
+                    <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail2" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-4">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    <input  id="tipo" formControlName="tipo" type="text" class="form-control" readonly>
+                </div>          
+                <div class="mb-3 col-4">
+                    <label for="cep" class="form-label">CEP</label>
+                    <input  formControlName="cep" type="text" class="form-control" id="cep" placeholder="Digite seu cep">
+                    <app-vmessage *ngIf="cadastroForm.get('cep')?.errors?.['required']" text="Cep é obrigatório">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('cep')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('cep')?.errors?.['maxlength']" text="O campo deve ter no máximo 9 caracteres">
+                    </app-vmessage>
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="estado" class="form-label">Estado</label>
+                    <input  formControlName="estado" type="text" class="form-control" id="estado" placeholder="Digite seu estado">
+                    <app-vmessage *ngIf="cadastroForm.get('estado')?.errors?.['required']" text="Estado é obrigatório">
+                    </app-vmessage>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="mb-3 col-4">
+                    <label for="cidade" class="form-label">Cidade</label>
+                    <input  formControlName="cidade" type="text" class="form-control" id="cidade" placeholder="Digite sua cidade">
+                    <app-vmessage *ngIf="cadastroForm.get('cidade')?.errors?.['required']" text="Cidade é obrigatório">
+                    </app-vmessage>
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="bairro" class="form-label">Bairro</label>
+                    <input  formControlName="bairro" type="text" class="form-control" id="bairro" placeholder="Digite seu bairro">
+                    <app-vmessage *ngIf="cadastroForm.get('bairro')?.errors?.['required']" text="Bairro é obrigatório">
+                    </app-vmessage>
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="numero" class="form-label">Número</label>
+                    <input  formControlName="numero" type="text" class="form-control" id="numero" placeholder="Digite o numero">
+                    <app-vmessage *ngIf="cadastroForm.get('numero')?.errors?.['required']" text="Número é obrigatório">
+                    </app-vmessage>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <label for="rua" class="form-label">Rua</label>
+                    <input  formControlName="rua" type="text" class="form-control" id="rua" placeholder="Digite sua rua">
+                    <app-vmessage *ngIf="cadastroForm.get('rua')?.errors?.['required']" text="Rua é obrigatório">
+                    </app-vmessage>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="complemento" class="form-label">Complemento</label>
+                    <input  formControlName="complemento" type="text" class="form-control" id="complemento" placeholder="Digite o complemento">
+                </div>
+            </div>
+            <div class="row"  *ngIf="isProdutor">
+                <div class="mb-3 col-6">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input  formControlName="telefone" type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="entrega" class="form-label">Disponibilidade para entrega</label>
+                    <select id="entrega" formControlName="entrega" class="form-select">
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>                  
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-6"> 
+                    <label for="senha2" class="form-label">Senha</label>
+                    <input  formControlName="senha" type="password" class="form-control" id="senha2">
+                    <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['required']" text="Senha é obrigatório">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['maxlength']" text="O campo deve ter no máximo 14 caracteres">
+                    </app-vmessage>
+                </div>
+                <div class="mb-3 col-6"> 
+                    <label for="confirmaSenha" class="form-label">Confirma senha</label>
+                    <input  formControlName="confirmaSenha" type="password" class="form-control" id="confirmaSenha">
+                    <div *ngIf="cadastroForm.get('confirmarSenha')?.invalid && cadastroForm.get('confirmarSenha')?.touched">
+                        <div *ngIf="cadastroForm.get('confirmarSenha')?.hasError('senhaDiferente')">As senhas não coincidem.</div>
+                    </div>
+                    <app-vmessage *ngIf="cadastroForm.get('confirmaSenha')?.errors?.['required']" text="Confirmar Senha é obrigatório">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('confirmaSenha')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('confirmaSenha')?.errors?.['maxlength']" text="O campo deve ter no máximo 14 caracteres">
+                    </app-vmessage>
+                    <app-vmessage *ngIf="cadastroForm.get('confirmaSenha')?.errors?.['senhasDiferentes']" text="Senhas diferentes">
+                    </app-vmessage>
+                </div>
+            </div>
+            <div class="row div-button">
+                    <button [disabled]="cadastroForm.invalid" type="submit" class="btn btn-success div-button_btn-cadastro">Cadastrar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+<div class="container" *ngIf="isProdutor">
+  <div class="row mt-4 p-4">
     <div class="col-12 mt-5">
       
       <div >

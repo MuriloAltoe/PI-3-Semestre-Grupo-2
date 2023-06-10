@@ -1,0 +1,47 @@
+.container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.texto {
+  position: absolute;
+
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  font-size: 18px;
+  z-index: 1;
+}
+.produtor {
+  width: 170px;
+  padding: 0;
+  text-align: center;
+  font-weight: bold;
+  h3 {
+    font-weight: bold;
+    overflow: hidden;
+    height: 35px;
+  }
+}
+
+.texto-produto {
+  top: 33%;
+  left: 81%;
+}
+
+.texto-produto-1 {
+  top: 50%;
+  left: 35%;
+}
+
+.texto-produto-2 {
+  top: 61%;
+  left: 4%;
+  transform: rotate(-9deg);
+}
+
+.texto-produto-3 {
+    top: 64%;
+    left: 41%;
+    transform: rotate(4deg);
+}
