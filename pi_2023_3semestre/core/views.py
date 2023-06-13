@@ -124,6 +124,28 @@ def usuario(request, id):
             'itens': str(itens2)
         }
         return JsonResponse(dictRetorno)
+    
+@csrf_exempt
+def usuarioExclusao(request, id):
+    conn = pymongo.MongoClient("localhost")
+    db = conn["banco"]
+
+    if request.method == 'DELETE':
+        try:
+            collection_itens = db["itens"]
+            collection_barraca = db["barraca"]
+
+            # Excluir os itens relacionados ao usuário
+            result_itens = collection_itens.delete_many({"id_usuario": id})
+            # Excluir o usuário
+            result_barraca = collection_barraca.delete_one({"_id": ObjectId(id)})
+
+            if result_barraca.deleted_count == 1:
+                return HttpResponse("Exclusão realizada com sucesso!")
+            else:
+                return HttpResponse("Falha na exclusão: usuário não encontrado.")
+        except Exception as e:
+            return HttpResponse(f"Erro durante a exclusão: {str(e)}")
 
 
 @csrf_exempt
@@ -173,7 +195,16 @@ def itens(request, id):
         pass
 
     elif request.method == 'DELETE':
-        pass
+        try:
+            collection = db["itens"]
+            result = collection.delete_many({"id_items": id})
+
+            if result.deleted_count > 0:
+                return HttpResponse("Exclusão dos itens realizada com sucesso!")
+            else:
+                return HttpResponse("Falha na exclusão: nenhum item encontrado.")
+        except Exception as e:
+            return HttpResponse(f"Erro durante a exclusão: {str(e)}")
 
     elif request.method == 'PUT':
         pass
