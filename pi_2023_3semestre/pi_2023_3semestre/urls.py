@@ -16,25 +16,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-<<<<<<< HEAD
-from core.views import usuario, itens, allItens, login, usuarioCadastro
+from core.views import allUsers,usuario, itens, allItens, login
+# , usuarioCadastro
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login', login), 
-    path('allUsuarios', usuario), 
-    path('usuario/<str:id>', usuario), # pega o usuario baseado no id(pelo url)
-    path('usuario', usuarioCadastro), # pega o usuario baseado no id(pelo url)
-=======
-from core.views import usuario, allUsers, login, itens, allItens
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('showUser/<str:id>', showUser)
-    path('login/', login), 
-    path('allUsers/', allUsers), 
+    path('allUsers', allUsers), 
     path('user/<str:id>', usuario), # pega o usuario baseado no id(pelo url)
->>>>>>> 62c5d51 (all-working)
+    # path('usuario', usuarioCadastro), # pega o usuario baseado no id(pelo url)
     path('allItens/', allItens), #serve pra pegar todos os items
     path('itens/<str:id>', itens), #serve pra pegar os items especificos do usuario(pelo url)
 ]

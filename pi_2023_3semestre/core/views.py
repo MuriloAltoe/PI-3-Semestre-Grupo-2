@@ -1,47 +1,44 @@
 from django.shortcuts import render
 import json
 import jwt
+import pymongo
 from bson import ObjectId
 from datetime import datetime, timedelta
 from django.http import HttpResponse, JsonResponse
-# from .models import Usuario, Barraca, Itens
 from django.views.decorators.csrf import csrf_exempt
 
-import pymongo
-from pymongo import InsertOne
 
 localhost="mongodb://localhost:27017/"
 
 @csrf_exempt
 def login(request):
+    conn = conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
     if request.method == 'POST':
-        conn = conn = pymongo.MongoClient(localhost)
-        db = conn["banco"]
         collection = db["barraca"]
         data = json.loads(request.body)
-
-        result = collection.find({
+        
+        result = list(collection.find({
             "email" : data["email"],
             "senha" : data["senha"],
-        })
+        }))
 
-        if result.count() > 0:
+        if len(result) > 0:
+
             payload = {
-                'user_id': str(result[0]['_id']),
+                'user_id': str(list(result)[0]['_id']),
+                'user_id':'',
                 'exp': datetime.utcnow() + timedelta(minutes=15)
             }
             # Gera o tolken
-            secret_key = 'stardewgreen'
+            secret_key = 'stardewgreen' # Senha
             token = jwt.encode(payload, secret_key, algorithm='HS256')
-
-            response = HttpResponse(token)
-
+            response = HttpResponse()
             response["x-access-token"] = token
-
             return response
         else:
-            return HttpResponse("usuario não encontrado")
-
+            return JsonResponse({'message': '>:c'})
 
 @csrf_exempt
 def usuario(request, id):
@@ -152,7 +149,6 @@ def usuario(request, id):
     else:
         return HttpResponse("Método não permitido. Use POST para enviar dados.")
 
-
 @csrf_exempt
 def itens(request, id):
     conn = pymongo.MongoClient(localhost)
@@ -162,13 +158,29 @@ def itens(request, id):
 
         collection = db["itens"]
         objId = ObjectId(id)
-        itens = list(collection.aggregate([{ "$match": { "_id": objId }}])) 
-        print(itens)
+
+        pipeline = [
+            { '$match': { "_id" : objId } },
+            { '$project': {
+                    '_id': {'$toString': '$_id'},  # Converter ObjectId para string
+                    # "id_item": "$id_item",
+                    "nome": "$nome",
+                    "preco": "$preco",
+                    "medida": "$medida",
+                    "categoria": "$categoria",
+                    "quantidade": "$quantidade",
+                    # "id_usuario": "$id_usuario"
+                }
+            }
+        ]
+
+        itens = list(collection.aggregate( pipeline ))
+
         itens2 = []
         for i in itens:
             itens2.append(i)
 
-        return HttpResponse(itens2)
+        return HttpResponse(json.dumps(itens2), content_type='application/json')
 
     elif request.method == 'POST':
         collection = db["itens"]
@@ -184,7 +196,8 @@ def itens(request, id):
         }
 
         collection.insert_one(dictRetorno)
-        return JsonResponse(data)
+        # return JsonResponse(data)
+        return HttpResponse()
 
     elif request.method == 'DELETE':
         collection = db["itens"]
@@ -263,25 +276,27 @@ def allItens(request):
     if request.method == 'GET':
         collection = db["itens"]
         pipeline = [{
-        '$project': {
-            '_id': {'$toString': '$_id'},  # Converter ObjectId para string
-            "id_item": "$id_item",
-            "nome": "$nome",
-            "preco": "$preco",
-            "medida": "$medida",
-            "categoria": "$categoria",
-            "quantidade": "$quantidade",
-            "id_usuario": "$id_usuario"
-        }
+            '$project': {
+                '_id': {'$toString': '$_id'},  # Converter ObjectId para string
+                # "id_item": "$id_item",
+                "nome": "$nome",
+                "preco": "$preco",
+                "medida": "$medida",
+                "categoria": "$categoria",
+                "quantidade": "$quantidade",
+                # "id_usuario": "$id_usuario"
+            }
         }]
 
         itens = list(collection.aggregate(pipeline)) 
 
         itens2 = []
+
         for i in itens:
             itens2.append(i)
 
-            retorno = json.dumps(itens2)
+        retorno = json.dumps(itens2)
+
 
         return HttpResponse(retorno, content_type='application/json')
 

@@ -1,6 +1,6 @@
 from django.db import models
 
-class Itens(djongo_models.Model):
+class Itens(models.Model):
     nome = models.CharField(verbose_name="nome", max_length=100)
     preco = models.DecimalField(verbose_name="preco", max_digits=8, decimal_places=2)
     categoria = models.CharField(verbose_name="categoria", max_length=100)
@@ -10,7 +10,7 @@ class Itens(djongo_models.Model):
         db_table = 'itens'
         
         
-class Usuario(djongo_models.Model):
+class Usuario(models.Model):
     email = models.EmailField(verbose_name="email",unique=True)
     nome = models.CharField(verbose_name="nome", max_length=100)
     tipo = models.BooleanField(verbose_name="tipo", )
