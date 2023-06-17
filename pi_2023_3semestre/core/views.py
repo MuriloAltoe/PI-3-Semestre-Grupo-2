@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-
 localhost="mongodb://localhost:27017/"
 
 @csrf_exempt
@@ -73,7 +72,7 @@ def usuario(request, id):
             "numeros"     :result2["numeros"],
             "estado"      :result2["estado"],
             "telefone"    :result2["telefone"],
-            "id_usuario"  :result2["id_usuario"],
+            # "id_usuario"  :result2["id_usuario"],
         }
         return JsonResponse(dictRetorno)
          
@@ -136,18 +135,21 @@ def usuario(request, id):
         result = collection.update_one({'_id': id}, {'$set': dictRetorno})
         
         if result.modified_count > 0:
-            return JsonResponse({'message': '>:D'})
+            return HttpResponse()
         else:
-            return JsonResponse({'message': '>:c'})
+            return HttpResponse()
 
     elif request.method == 'DELETE':
         collection = db["barraca"]
-        data = json.loads(request.body)
-        collection.delete_one({"_id":ObjectId(data['id'])})
-        return HttpResponse()
 
+        data = json.loads(request.body)
+
+        collection.delete_one({"_id":ObjectId(data['id'])})
+
+        return HttpResponse()
+    
     else:
-        return HttpResponse("Método não permitido. Use POST para enviar dados.")
+        return HttpResponse()
 
 @csrf_exempt
 def itens(request, id):
@@ -196,7 +198,6 @@ def itens(request, id):
         }
 
         collection.insert_one(dictRetorno)
-        # return JsonResponse(data)
         return HttpResponse()
 
     elif request.method == 'DELETE':
@@ -224,13 +225,11 @@ def itens(request, id):
 
         result = collection.update_one({'_id': objId}, {'$set': update_data})
         if result.modified_count > 0:
-            return JsonResponse({'message': '>:D'})
+            return HttpResponse()
         else:
-            return JsonResponse({'message': '>:c'})
-         
+            return HttpResponse()     
     else:
-        return HttpResponse("Método não permitido. Use POST para enviar dados.")
-
+        return HttpResponse()
 
 @csrf_exempt
 def allUsers(request):
