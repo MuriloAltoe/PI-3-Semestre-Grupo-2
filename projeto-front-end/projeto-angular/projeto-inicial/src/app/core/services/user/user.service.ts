@@ -39,8 +39,9 @@ export class UserService {
   
   private decodeAndNotify(): void {
     const token = this.tokenService.getToken() || '';
-    const user = jwt_decode(token) as IUsuario;
-    this.userName = user.nome;
-    this.userSubject.next(user);
+    const user: {user: IUsuario, exp: number} = jwt_decode(token);
+
+    this.userName = user.user.nome;
+    this.userSubject.next( user.user);
   }
 }

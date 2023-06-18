@@ -1,5 +1,7 @@
+import { IItem } from "./item.interface";
+
 export interface IUsuario {
-  user_id: number;
+  _id: string;
   nome: string;
   email: string;
   senha: string;
@@ -13,4 +15,5 @@ export interface IUsuario {
   complemento: string;
   entrega: boolean;
   telefone: string;
+  itens: IItem[];
 }

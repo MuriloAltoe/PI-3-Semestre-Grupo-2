@@ -117,9 +117,9 @@
       <div class="modal-content ">
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-center w-100" id="staticBackdrop2Label">Login</h1>
-          <button type="button" id="closeModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+          <button type="button" id="closeModalUsuario" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div> 
-        <form  [formGroup]="cadastroForm" (submit)="cadastrar()" class="modal-edit">
+        <form  [formGroup]="cadastroForm" (submit)="editar()" class="modal-edit">
             <div class="row">
                 <div class="mb-3 col-6">
                     <label for="nome" class="form-label">Nome</label>
@@ -237,6 +237,7 @@
       </div>
     </div>
 </div>
+
 <div class="container" *ngIf="isProdutor">
   <div class="row mt-4 p-4">
     <div class="col-12 mt-5">
@@ -259,17 +260,14 @@
               <th class="th-table"> Editar </th>
               <th class="th-table"> Deletar </th>
               </tr>
-          </thead><!-- /thead -->
-          <!-- tbody -->
-          <tbody>
-
-           
-              <tr>
+          </thead>
+          <tbody *ngIf="produtosList.length > 0" >
+              <tr *ngFor="let produto of produtosList">
                 <!-- Aqui vem um loop para pegar todos os produtos -->
-                  <td>Exemplo</td>
-                  <td>Exemplo</td>
-                  <td>10</td>
-                  <td>R$ 20,63 </td>
+                  <td>{{produto.nome}}</td>
+                  <td>{{produto.categoria}}</td>
+                  <td>{{produto.quantidade}} {{produto.medida}}</td>
+                  <td>R$ {{produto.preco}} {{produto.medida}} </td>
                  
                   <td class="align-middle text-center" style="width: 50px;">
                     <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalEditarProduto">
@@ -284,10 +282,7 @@
                   </td>
                <!-- Aqui fecha o looop -->
               </tr>
-    
-
-          </tbody><!-- /tbody -->
-          
+          </tbody>
       </table> 
       <!-- End tabela -->
 

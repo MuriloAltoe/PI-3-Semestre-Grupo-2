@@ -19,7 +19,7 @@
         </div>
     
         <div class="col-md-3 text-end" *ngIf="logado">
-            <button type="button" class="btn btn-outline-success me-2" [routerLink]="['usuario']">{{tipoUsuario}}</button>
+            <button type="button" class="btn btn-outline-success me-2" [routerLink]="['usuario', usuario._id]">{{tipoUsuario}}</button>
             <button type="button" class="btn btn-success" (click)="logout()">Sair <i class="fa fa-sign-out"></i></button>
         </div>
     </div>

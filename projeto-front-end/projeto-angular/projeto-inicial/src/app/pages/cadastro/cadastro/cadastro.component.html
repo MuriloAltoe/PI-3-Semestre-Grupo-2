@@ -16,8 +16,8 @@
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-6">
-                        <label for="exampleInputEmail1" class="form-label">E-mail</label>
-                        <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Digite seu e-mail">
+                        <label for="exampleInputEmail4" class="form-label">E-mail</label>
+                        <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail4" placeholder="Digite seu e-mail">
                         <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['required']" text="E-mail é obrigatório">
                         </app-vmessage>
                         <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['email']" text="E-mail inválido">
@@ -100,8 +100,8 @@
                 </div>
                <div class="row">
                     <div class="mb-3 col-6"> 
-                        <label for="senha" class="form-label">Senha</label>
-                        <input  formControlName="senha" type="password" class="form-control" id="senha">
+                        <label for="senha4" class="form-label">Senha</label>
+                        <input  formControlName="senha" type="password" class="form-control" id="senha4">
                         <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['required']" text="Senha é obrigatório">
                         </app-vmessage>
                         <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">

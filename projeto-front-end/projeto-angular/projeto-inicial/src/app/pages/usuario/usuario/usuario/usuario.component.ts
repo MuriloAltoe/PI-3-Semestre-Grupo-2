@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 import { INovoUsuario } from 'src/app/core/model/interfaces/novo-usuario.interface';
+import { ActivatedRoute } from '@angular/router';
+import { IItem } from 'src/app/core/model/interfaces/item.interface';
 
 @Component({
   selector: 'app-usuario',
@@ -25,39 +27,23 @@ export class UsuarioComponent implements OnInit {
   user: IUsuario | null = null;
   usuarioNome = '';
   entrega = '';
+  userId = '';
+  produtosList: IItem[] = [];
 
   constructor(
-    private userService: UserService,
     private formBuilder: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private route: ActivatedRoute,
   ) {
-    this.userService.getUser().subscribe({
-      next: (user) => {
-        this.user = user;
-        if (this.user) {
-          this.usuarioNome = user?.nome?.split(" ")[0] || '';
-          console.log(this.user);
-        }
-        if (user && user.tipo == 'produtor') {
-          this.isProdutor = true;
-          if ((user.entrega as unknown as string) == 'true') {
-            this.entrega = 'SIM';
-          } else {
-            this.entrega = 'NÃO';
-          }
-        } else {
-          this.isProdutor = false;
-        }
-      },
-    });
+    this.userId = this.route.snapshot.paramMap.get('id') || '';
   }
 
   ngOnInit(): void {
+    this.getUser();
     this.startForm();
   }
 
   startForm(): void {
-    console.log(this.user);
     this.cadastroForm = this.formBuilder.group({
       email: [this.user?.email || ''],
       nome: [
@@ -103,9 +89,7 @@ export class UsuarioComponent implements OnInit {
 
   validarSenhasCompativeis(control: AbstractControl): ValidationErrors | null {
     const senha = control.parent?.value.senha;
-    const confirmarSenha = control.value;
-
-    console.log(senha, confirmarSenha);
+    const confirmarSenha = control.value
     if (
       confirmarSenha &&
       confirmarSenha.length >= 8 &&
@@ -117,7 +101,7 @@ export class UsuarioComponent implements OnInit {
     return null;
   }
 
-  cadastrar() {
+  editar() {
     const userForm = this.cadastroForm.getRawValue() as IUsuario;
 
     const newUser: INovoUsuario = {
@@ -137,11 +121,42 @@ export class UsuarioComponent implements OnInit {
     };
 
     if (this.cadastroForm.valid) {
-      console.log(newUser);
+      this.usuarioService.updateUser(this.user?._id || '', newUser).subscribe({
+        next: () => {
+          this.getUser();
+          document.getElementById('closeModalUsuario')?.click();
+        },
+        error: (err) => console.error(err)
+      })
     }
   }
 
-  closeModal() {}
+  getUser(){
+    this.usuarioService.getUserById(this.userId).subscribe({
+      next: (result) => {
+        if(result){
+          console.log(result)
+          this.user = result;
+          this.produtosList = result.itens;
+          if (this.user) {
+            this.startForm();
+            this.usuarioNome = result.nome?.split(" ")[0] || '';
+          }
+          if (result.tipo == 'produtor') {
+            this.isProdutor = true;
+            if ((result.entrega as unknown as string) == 'true') {
+              this.entrega = 'SIM';
+            } else {
+              this.entrega = 'NÃO';
+            }
+          } else {
+            this.isProdutor = false;
+          }
+        }
+      },
+      error: (err) => console.error(err)
+    })
+  }
 
   setCurrentStep(step: number) {
     this.currentStep = step;

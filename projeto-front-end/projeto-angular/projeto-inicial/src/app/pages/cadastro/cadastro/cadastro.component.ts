@@ -110,7 +110,7 @@ export class CadastroComponent implements OnInit {
       telefone: userForm.telefone,
     };
 
-    if (this.cadastroForm.valid) {
+    if (!this.cadastroForm.invalid) {
       this.usuarioService.creatUser(newUser).subscribe({
         next: () => this.router.navigate(['']),
         error: (err) => {

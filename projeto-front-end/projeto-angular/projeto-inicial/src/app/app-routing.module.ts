@@ -31,7 +31,7 @@ const routes: Routes = [
     component: SobreComponent,
   },
   {
-    path: 'usuario',
+    path: 'usuario/:id',
     component: UsuarioComponent,
     canActivate: [AuthGuard]
   },

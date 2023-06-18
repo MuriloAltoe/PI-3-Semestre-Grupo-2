@@ -1,3 +1,4 @@
+import { IUsuario } from 'src/app/core/model/interfaces/usuario.interface';
 import { UsuarioService } from './../../core/services/usuario/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,24 +15,28 @@ export class HeaderComponent implements OnInit {
   tipoUsuario = '';
   loginFalha = false;
   loginForm!: FormGroup;
-  
+  usuario!: IUsuario;
+
   constructor(
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router,
-    private userService: UserService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.logado = this.userService.isLogged();
     this.userService.getUser().subscribe({
       next: (res) => {
-        if(res?.tipo === 'produtor'){
-          this.tipoUsuario = 'Area do Produtor';
-        } else{
-          this.tipoUsuario = 'Area do Usuário';
+        if (res) {
+          this.usuario = res;
+          if (res.tipo === 'produtor') {
+            this.tipoUsuario = 'Area do Produtor';
+          } else {
+            this.tipoUsuario = 'Area do Usuário';
+          }
         }
-      }
+      },
     });
 
     this.loginForm = this.formBuilder.group({
@@ -45,11 +50,10 @@ export class HeaderComponent implements OnInit {
     const senha = this.loginForm.get('senha')?.value;
 
     this.usuarioService.authenticate(email, senha).subscribe({
-      next: (res) => {
+      next: () => {
         this.logado = true;
         this.router.navigate(['home']);
         document.getElementById('closeModal')?.click();
-       
       },
       error: (err) => {
         this.loginForm.reset();
@@ -61,18 +65,18 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  logout(){
+  logout() {
     this.userService.logout();
     this.router.navigate(['']);
     this.logado = false;
   }
 
-  closeModal(){
+  closeModal() {
     this.loginForm.reset();
     this.loginFalha = false;
   }
 
-  changeInput(){
+  changeInput() {
     this.loginFalha = false;
   }
 }

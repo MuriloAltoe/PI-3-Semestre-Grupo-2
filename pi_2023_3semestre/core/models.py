@@ -1,4 +1,5 @@
 from django.db import models
+from djongo import models as djongo_models
 
 class Itens(models.Model):
     nome = models.CharField(verbose_name="nome", max_length=100)
