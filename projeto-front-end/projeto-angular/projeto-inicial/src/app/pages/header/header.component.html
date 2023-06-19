@@ -6,15 +6,14 @@
         </div>
     
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2" [routerLink]="['home']">Home</a></li>
-            <li><a href="#" class="nav-link px-2"  [routerLink]="'/sobre'">Sobre</a></li>
-            <li><a href="#" class="nav-link px-2"  [routerLink]="'/contato'">contato</a></li>
-            <li><a href="#" class="nav-link px-2"></a></li>
+            <li><a class="nav-link px-2" [routerLink]="['home']">Home</a></li>
+            <li><a class="nav-link px-2"  [routerLink]="'/sobre'">Sobre</a></li>
+            <li><a class="nav-link px-2"  [routerLink]="'/contato'">contato</a></li>
         </ul>
     
 
         <div class="col-md-3 text-end" *ngIf="!logado">
-            <button type="button" class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Entrar</button>
+            <button type="button" class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#staticBackdropHeader">Entrar</button>
             <button [routerLink]="['cadastro']" type="button" class="btn btn-success">Cadastrar-se</button>
         </div>
     
@@ -25,21 +24,21 @@
     </div>
 </header> 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdropHeader" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropHeaderLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-center w-100" id="staticBackdropLabel">Login</h1>
+          <h1 class="modal-title fs-5 text-center w-100" id="staticBackdropHeaderLabel">Login</h1>
           <button type="button" id="closeModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
         </div> 
         <form  [formGroup]="loginForm" (submit)="entrar()">
             <div class="modal-body">
                 <div class="row">
                     <div class="mb-3 col-12">
-                        <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="E-mail" (ngModelChange)="changeInput()">
+                        <input  formControlName="email" type="email" class="form-control" id="emailHeader" placeholder="E-mail" (ngModelChange)="changeInput()">
                     </div>
                     <div class="mb-3 col-12"> 
-                        <input  formControlName="senha" type="password" class="form-control" id="senha" placeholder="Senha">
+                        <input  formControlName="senha" type="password" class="form-control" id="senhaHeader" placeholder="Senha">
                     </div>
                     <small *ngIf="loginFalha" class="text-danger">Usuário ou senha inválido</small>
                 </div>

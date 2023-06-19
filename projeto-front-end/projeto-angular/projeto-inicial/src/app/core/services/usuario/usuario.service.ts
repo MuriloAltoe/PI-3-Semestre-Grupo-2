@@ -5,7 +5,6 @@ import { IUsuario } from '../../model/interfaces/usuario.interface';
 import { UserService } from '../user/user.service';
 import { INovoUsuario } from '../../model/interfaces/novo-usuario.interface';
 import { environment } from 'src/environments/environment';
-import jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -41,9 +40,6 @@ export class UsuarioService {
       .pipe(
         tap((res) => {
           if(res.body.token){ 
-            const decodedToken: any = jwtDecode(res.body.token);
-            const expirationDate = new Date(decodedToken.exp * 1000); 
-            console.log(expirationDate)
             this.userService.setToken(res.body.token);
           }
         })

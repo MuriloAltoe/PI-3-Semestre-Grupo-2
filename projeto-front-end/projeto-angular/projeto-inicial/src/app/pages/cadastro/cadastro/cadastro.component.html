@@ -6,8 +6,8 @@
             <form  [formGroup]="cadastroForm" (submit)="cadastrar()">
                 <div class="row">
                     <div class="mb-3 col-6">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input  formControlName="nome" type="text" class="form-control" id="nome" placeholder="Digite seu nome completo">
+                        <label for="nomeCadastro" class="form-label">Nome</label>
+                        <input  formControlName="nome" type="text" class="form-control" id="nomeCadastro" placeholder="Digite seu nome completo">
                         <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['required']" text="Nome é obrigatório">
                         </app-vmessage>
                         <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['minlength']" text="O campo deve ter no mínimo 2 caracteres">
@@ -16,8 +16,8 @@
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-6">
-                        <label for="exampleInputEmail4" class="form-label">E-mail</label>
-                        <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail4" placeholder="Digite seu e-mail">
+                        <label for="emailCadastro" class="form-label">E-mail</label>
+                        <input  formControlName="email" type="email" class="form-control" id="emailCadastro" placeholder="Digite seu e-mail">
                         <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['required']" text="E-mail é obrigatório">
                         </app-vmessage>
                         <app-vmessage *ngIf="cadastroForm.get('email')?.errors?.['email']" text="E-mail inválido">
@@ -28,8 +28,8 @@
                 </div>
                 <div class="row">
                     <div class="mb-3 col-4">
-                        <label for="tipo" class="form-label">Tipo</label>
-                        <select id="tipo" formControlName="tipo" class="form-select" (ngModelChange)="changeTipo($event)">
+                        <label for="tipoCadastro" class="form-label">Tipo</label>
+                        <select id="tipoCadastro" formControlName="tipo" class="form-select" (ngModelChange)="changeTipo($event)">
                             <option value="produtor">Produtor</option>
                             <option value="consumidor">Consumidor</option>
                         </select>
@@ -37,8 +37,8 @@
                         </app-vmessage>
                     </div>          
                     <div class="mb-3 col-4">
-                        <label for="cep" class="form-label">CEP</label>
-                        <input  formControlName="cep" type="text" class="form-control" id="cep" placeholder="Digite seu cep">
+                        <label for="cepCadastro" class="form-label">CEP</label>
+                        <input  formControlName="cep" type="text" class="form-control" id="cepCadastro" placeholder="Digite seu cep">
                         <app-vmessage *ngIf="cadastroForm.get('cep')?.errors?.['required']" text="Cep é obrigatório">
                         </app-vmessage>
                         <app-vmessage *ngIf="cadastroForm.get('cep')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">
@@ -47,52 +47,52 @@
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-4">
-                        <label for="estado" class="form-label">Estado</label>
-                        <input  formControlName="estado" type="text" class="form-control" id="estado" placeholder="Digite seu estado">
+                        <label for="estadoCadastro" class="form-label">Estado</label>
+                        <input  formControlName="estado" type="text" class="form-control" id="estadoCadastro" placeholder="Digite seu estado">
                         <app-vmessage *ngIf="cadastroForm.get('estado')?.errors?.['required']" text="Estado é obrigatório">
                         </app-vmessage>
                     </div>
                 </div> 
                 <div class="row">
                     <div class="mb-3 col-4">
-                        <label for="cidade" class="form-label">Cidade</label>
-                        <input  formControlName="cidade" type="text" class="form-control" id="cidade" placeholder="Digite sua cidade">
+                        <label for="cidadeCadastro" class="form-label">Cidade</label>
+                        <input  formControlName="cidade" type="text" class="form-control" id="cidadeCadastro" placeholder="Digite sua cidade">
                         <app-vmessage *ngIf="cadastroForm.get('cidade')?.errors?.['required']" text="Cidade é obrigatório">
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-4">
-                        <label for="bairro" class="form-label">Bairro</label>
-                        <input  formControlName="bairro" type="text" class="form-control" id="bairro" placeholder="Digite seu bairro">
+                        <label for="bairroCadastro" class="form-label">Bairro</label>
+                        <input  formControlName="bairro" type="text" class="form-control" id="bairroCadastro" placeholder="Digite seu bairro">
                         <app-vmessage *ngIf="cadastroForm.get('bairro')?.errors?.['required']" text="Bairro é obrigatório">
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-4">
-                        <label for="numero" class="form-label">Número</label>
-                        <input  formControlName="numero" type="text" class="form-control" id="numero" placeholder="Digite o numero">
+                        <label for="numeroCadastro" class="form-label">Número</label>
+                        <input  formControlName="numero" type="text" class="form-control" id="numeroCadastro" placeholder="Digite o numero">
                         <app-vmessage *ngIf="cadastroForm.get('numero')?.errors?.['required']" text="Número é obrigatório">
                         </app-vmessage>
                     </div>
                 </div>
                 <div class="row">
                     <div class="mb-3 col-6">
-                        <label for="rua" class="form-label">Rua</label>
-                        <input  formControlName="rua" type="text" class="form-control" id="rua" placeholder="Digite sua rua">
+                        <label for="ruaCadastro" class="form-label">Rua</label>
+                        <input  formControlName="rua" type="text" class="form-control" id="ruaCadastro" placeholder="Digite sua rua">
                         <app-vmessage *ngIf="cadastroForm.get('rua')?.errors?.['required']" text="Rua é obrigatório">
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-6">
-                        <label for="complemento" class="form-label">Complemento</label>
-                        <input  formControlName="complemento" type="text" class="form-control" id="complemento" placeholder="Digite o complemento">
+                        <label for="complementoCadastro" class="form-label">Complemento</label>
+                        <input  formControlName="complemento" type="text" class="form-control" id="complementoCadastro" placeholder="Digite o complemento">
                     </div>
                 </div>
                 <div class="row"  *ngIf="isProdutor">
                     <div class="mb-3 col-6">
-                        <label for="telefone" class="form-label">Telefone</label>
-                        <input  formControlName="telefone" type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
+                        <label for="telefoneCadastro" class="form-label">Telefone</label>
+                        <input  formControlName="telefone" type="text" class="form-control" id="telefoneCadastro" placeholder="Digite seu telefone">
                     </div>
                     <div class="mb-3 col-6">
-                        <label for="entrega" class="form-label">Disponibilidade para entrega</label>
-                        <select id="entrega" formControlName="entrega" class="form-select">
+                        <label for="entregaCadastro" class="form-label">Disponibilidade para entrega</label>
+                        <select id="entregaCadastro" formControlName="entrega" class="form-select">
                             <option value="true">Sim</option>
                             <option value="false">Não</option>
                         </select>                  
@@ -100,8 +100,8 @@
                 </div>
                <div class="row">
                     <div class="mb-3 col-6"> 
-                        <label for="senha4" class="form-label">Senha</label>
-                        <input  formControlName="senha" type="password" class="form-control" id="senha4">
+                        <label for="senhaCadastro" class="form-label">Senha</label>
+                        <input  formControlName="senha" type="password" class="form-control" id="senhaCadastro">
                         <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['required']" text="Senha é obrigatório">
                         </app-vmessage>
                         <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">
@@ -110,8 +110,8 @@
                         </app-vmessage>
                     </div>
                     <div class="mb-3 col-6"> 
-                        <label for="confirmaSenha" class="form-label">Confirma senha</label>
-                        <input  formControlName="confirmaSenha" type="password" class="form-control" id="confirmaSenha">
+                        <label for="confirmaSenhaCadastro" class="form-label">Confirma senha</label>
+                        <input  formControlName="confirmaSenha" type="password" class="form-control" id="confirmaSenhaCadastro">
                         <div *ngIf="cadastroForm.get('confirmarSenha')?.invalid && cadastroForm.get('confirmarSenha')?.touched">
                             <div *ngIf="cadastroForm.get('confirmarSenha')?.hasError('senhaDiferente')">As senhas não coincidem.</div>
                           </div>

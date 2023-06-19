@@ -32,7 +32,7 @@
                         <h2>Informações pessoais</h2>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Editar <i class="fa fa-edit"></i></button>
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdropUsuario">Editar <i class="fa fa-edit"></i></button>
                     </div>
                 </div>
                 <div class="row">
@@ -46,7 +46,7 @@
                         <h6 class="m-0">CEP:</h6>
                         <p>{{user?.cep}}</p>
                     </div>
-                    <div class="col-6" style="    align-self: center; padding-left: 13%;                   ">
+                    <div class="col-6" style="align-self: center; padding-left: 13%;">
                         <i class="fa fa-user-circle" style="font-size: 110px; " aria-hidden="true"></i>
                     </div>
                 </div>
@@ -112,18 +112,18 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop2Label" aria-hidden="true">
+<div class="modal fade" id="staticBackdropUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropUsuarioLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
       <div class="modal-content ">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-center w-100" id="staticBackdrop2Label">Login</h1>
+          <h1 class="modal-title fs-5 text-center w-100" id="staticBackdropUsuarioLabel">Editar Usuário</h1>
           <button type="button" id="closeModalUsuario" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div> 
         <form  [formGroup]="cadastroForm" (submit)="editar()" class="modal-edit">
             <div class="row">
                 <div class="mb-3 col-6">
-                    <label for="nome" class="form-label">Nome</label>
-                    <input  formControlName="nome" type="text" class="form-control" id="nome" placeholder="Digite seu nome completo">
+                    <label for="nomeUsuario" class="form-label">Nome</label>
+                    <input  formControlName="nome" type="text" class="form-control" id="nomeUsuario" placeholder="Digite seu nome completo">
                     <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['required']" text="Nome é obrigatório">
                     </app-vmessage>
                     <app-vmessage *ngIf="cadastroForm.get('nome')?.errors?.['minlength']" text="O campo deve ter no mínimo 2 caracteres">
@@ -132,14 +132,14 @@
                     </app-vmessage>
                 </div>
                 <div class="mb-3 col-6">
-                    <label for="exampleInputEmail2" class="form-label">E-mail</label>
-                    <input  formControlName="email" type="email" class="form-control" id="exampleInputEmail2" readonly>
+                    <label for="emailUsuario" class="form-label">E-mail</label>
+                    <input  formControlName="email" type="email" class="form-control" id="emailUsuario" readonly>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-4">
-                    <label for="tipo" class="form-label">Tipo</label>
-                    <input  id="tipo" formControlName="tipo" type="text" class="form-control" readonly>
+                    <label for="tipoUsuario" class="form-label">Tipo</label>
+                    <input  id="tipoUsuario" formControlName="tipo" type="text" class="form-control" readonly>
                 </div>          
                 <div class="mb-3 col-4">
                     <label for="cep" class="form-label">CEP</label>
@@ -160,44 +160,44 @@
             </div> 
             <div class="row">
                 <div class="mb-3 col-4">
-                    <label for="cidade" class="form-label">Cidade</label>
-                    <input  formControlName="cidade" type="text" class="form-control" id="cidade" placeholder="Digite sua cidade">
+                    <label for="cidadeUsuario" class="form-label">Cidade</label>
+                    <input  formControlName="cidade" type="text" class="form-control" id="cidadeUsuario" placeholder="Digite sua cidade">
                     <app-vmessage *ngIf="cadastroForm.get('cidade')?.errors?.['required']" text="Cidade é obrigatório">
                     </app-vmessage>
                 </div>
                 <div class="mb-3 col-4">
-                    <label for="bairro" class="form-label">Bairro</label>
-                    <input  formControlName="bairro" type="text" class="form-control" id="bairro" placeholder="Digite seu bairro">
+                    <label for="bairroUsuario" class="form-label">Bairro</label>
+                    <input  formControlName="bairro" type="text" class="form-control" id="bairroUsuario" placeholder="Digite seu bairro">
                     <app-vmessage *ngIf="cadastroForm.get('bairro')?.errors?.['required']" text="Bairro é obrigatório">
                     </app-vmessage>
                 </div>
                 <div class="mb-3 col-4">
-                    <label for="numero" class="form-label">Número</label>
-                    <input  formControlName="numero" type="text" class="form-control" id="numero" placeholder="Digite o numero">
+                    <label for="numeroUsuario" class="form-label">Número</label>
+                    <input  formControlName="numero" type="text" class="form-control" id="numeroUsuario" placeholder="Digite o numero">
                     <app-vmessage *ngIf="cadastroForm.get('numero')?.errors?.['required']" text="Número é obrigatório">
                     </app-vmessage>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-6">
-                    <label for="rua" class="form-label">Rua</label>
-                    <input  formControlName="rua" type="text" class="form-control" id="rua" placeholder="Digite sua rua">
+                    <label for="ruaUsuario" class="form-label">Rua</label>
+                    <input  formControlName="rua" type="text" class="form-control" id="ruaUsuario" placeholder="Digite sua rua">
                     <app-vmessage *ngIf="cadastroForm.get('rua')?.errors?.['required']" text="Rua é obrigatório">
                     </app-vmessage>
                 </div>
                 <div class="mb-3 col-6">
-                    <label for="complemento" class="form-label">Complemento</label>
-                    <input  formControlName="complemento" type="text" class="form-control" id="complemento" placeholder="Digite o complemento">
+                    <label for="complementoUsuario" class="form-label">Complemento</label>
+                    <input  formControlName="complemento" type="text" class="form-control" id="complementoUsuario" placeholder="Digite o complemento">
                 </div>
             </div>
             <div class="row"  *ngIf="isProdutor">
                 <div class="mb-3 col-6">
-                    <label for="telefone" class="form-label">Telefone</label>
-                    <input  formControlName="telefone" type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
+                    <label for="telefoneUsuario" class="form-label">Telefone</label>
+                    <input  formControlName="telefone" type="text" class="form-control" id="telefoneUsuario" placeholder="Digite seu telefone">
                 </div>
                 <div class="mb-3 col-6">
-                    <label for="entrega" class="form-label">Disponibilidade para entrega</label>
-                    <select id="entrega" formControlName="entrega" class="form-select">
+                    <label for="entregaUsuario" class="form-label">Disponibilidade para entrega</label>
+                    <select id="entregaUsuario" formControlName="entrega" class="form-select">
                         <option value="true">Sim</option>
                         <option value="false">Não</option>
                     </select>                  
@@ -205,8 +205,8 @@
             </div>
             <div class="row">
                 <div class="mb-3 col-6"> 
-                    <label for="senha2" class="form-label">Senha</label>
-                    <input  formControlName="senha" type="password" class="form-control" id="senha2">
+                    <label for="senhaUsuario" class="form-label">Senha</label>
+                    <input  formControlName="senha" type="password" class="form-control" id="senhaUsuario">
                     <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['required']" text="Senha é obrigatório">
                     </app-vmessage>
                     <app-vmessage *ngIf="cadastroForm.get('senha')?.errors?.['minlength']" text="O campo deve ter no mínimo 8 caracteres">
@@ -215,8 +215,8 @@
                     </app-vmessage>
                 </div>
                 <div class="mb-3 col-6"> 
-                    <label for="confirmaSenha" class="form-label">Confirma senha</label>
-                    <input  formControlName="confirmaSenha" type="password" class="form-control" id="confirmaSenha">
+                    <label for="confirmaSenhaUsuario" class="form-label">Confirma senha</label>
+                    <input  formControlName="confirmaSenha" type="password" class="form-control" id="confirmaSenhaUsuario">
                     <div *ngIf="cadastroForm.get('confirmarSenha')?.invalid && cadastroForm.get('confirmarSenha')?.touched">
                         <div *ngIf="cadastroForm.get('confirmarSenha')?.hasError('senhaDiferente')">As senhas não coincidem.</div>
                     </div>
@@ -231,7 +231,7 @@
                 </div>
             </div>
             <div class="row div-button">
-                    <button [disabled]="cadastroForm.invalid" type="submit" class="btn btn-success div-button_btn-cadastro">Cadastrar</button>
+                    <button [disabled]="cadastroForm.invalid" type="submit" class="btn btn-success div-button_btn-cadastro">Editar</button>
             </div>
         </form>
       </div>
@@ -241,7 +241,6 @@
 <div class="container" *ngIf="isProdutor">
   <div class="row mt-4 p-4">
     <div class="col-12 mt-5">
-      
       <div >
        <a data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" class="d-flex align-items-center"  style="gap:10px; text-decoration: none;"> 
         <img class="lift-lg" src="../../../../../assets/img/icon-add.svg" width="50" alt="">
@@ -249,125 +248,147 @@
       </a>
       </div>
       <h4 class="text-center mb-4" style="letter-spacing: 5px;">LISTA DE PRODUTOS</h4>
-      <!-- Tabela -->
-      <table id="tabela" class="table table-striped table-bordered dt-responsive nowrap">  
+      <table id="tabelaProduto" class="table table-striped table-bordered dt-responsive nowrap">  
           <thead>
               <tr>
-              <th> Nome</th>
-              <th> Categoria </th>
-              <th> Quantidade </th>
-              <th> Valor </th>
-              <th class="th-table"> Editar </th>
-              <th class="th-table"> Deletar </th>
+                <th> Nome</th>
+                <th> Categoria </th>
+                <th> Quantidade </th>
+                <th> Valor </th>
+                <th class="th-table"> Editar </th>
+                <th class="th-table"> Deletar </th>
               </tr>
           </thead>
           <tbody *ngIf="produtosList.length > 0" >
               <tr *ngFor="let produto of produtosList">
-                <!-- Aqui vem um loop para pegar todos os produtos -->
                   <td>{{produto.nome}}</td>
                   <td>{{produto.categoria}}</td>
                   <td>{{produto.quantidade}} {{produto.medida}}</td>
                   <td>R$ {{produto.preco}} {{produto.medida}} </td>
                  
                   <td class="align-middle text-center" style="width: 50px;">
-                    <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalEditarProduto">
+                    <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalEditarProduto" (click)="setProdutoEditar(produto)">
                       <img src="../../../../../assets/img/icon-editar.png" width="30" alt="icone de edição">
                     </button>
                   </td>
 
                   <td class="align-middle text-center" style="width: 50px;">
-                    <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalDeletarProduto">
+                    <button class="btn-modal lift-lg" data-bs-toggle="modal" data-bs-target="#modalDeletarProduto" (click)="setProdutoDeletar(produto)">
                       <img src="../../../../../assets/img/icon-excluir.png" width="30" alt="icone de edição">
                     </button>
                   </td>
-               <!-- Aqui fecha o looop -->
               </tr>
           </tbody>
       </table> 
-      <!-- End tabela -->
-
-       <!-- Modal de adicionar produto -->
-       <div class="modal fade" id="modalAdicionarProduto" tabindex="-1" aria-labelledby="modalAdicionarProdutoLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      
+      <div class="modal fade" id="modalAdicionarProduto" tabindex="-1" aria-labelledby="modalAdicionarProdutoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5 title-edit" id="exampleModalLabel">Adicionar produto</h1>
+              <h1 class="modal-title fs-5 title-edit" id="exampleModalLabelH1">Adicionar produto</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST">
-            <div class="modal-body">
-                  <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
+            <form [formGroup]="cadastroProdutoForm" (submit)="cadastrarProduto()">
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-6">
                     <div class="mb-3">
-                      <label for="exampleInputText1" class="form-label">Nome</label>
-                      <input type="text" class="form-control" id="nome" name="nome" aria-describedby="Nome">
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleInputText2" class="form-label">Categoria</label>
-                      <input type="text" class="form-control" id="categoria" name="categoria" aria-describedby="Categoria">
+                      <label for="nomeProduto" class="form-label">Nome</label>
+                      <input formControlName="nomeProduto" type="text" class="form-control" placeholder="Digite o nome do produto"
+                      id="nomeProduto" name="nome" aria-describedby="Nome">
                     </div>
                   </div>
-                  <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
+                  <div class="col-6">
                     <div class="mb-3">
-                      <label for="exampleInputNumber1" class="form-label">Quantidade</label>
-                      <input type="number" class="form-control" id="quantidade" name="quantidade" aria-describedby="Quantidade">
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleInputNumber2" class="form-label">Valor</label>
-                      <input type="number" step="any" class="form-control" id="valor" name="valor">
+                      <label for="categoriaProduto" class="form-label">Categoria</label>
+                      <input formControlName="categoriaProduto" type="text" class="form-control" id="categoriaProduto" name="categoria" aria-describedby="Categoria" placeholder="Digite a categoria do produto(Frutas, Verduras, Raiz, Legumes)">
                     </div>
                   </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-star lift-lg" value="ADICIONAR PRODUTO">Adicionar</button>
-              <button type="button" class="btn btn-star-dark lift-lg" data-bs-dismiss="modal">Fechar</button>             
-            </div>
-           </form>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="quantidadeProduto" class="form-label">Quantidade</label>
+                      <input formControlName="quantidadeProduto" type="number" class="form-control" id="quantidadeProduto" name="quantidade" aria-describedby="Quantidade" placeholder="Digite a quantidade do produto">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="valorProduto" class="form-label">Valor</label>
+                      <input formControlName="valorProduto" type="number" step="any" class="form-control" id="valorProduto" name="valor" placeholder="Digite o valor do produto">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="medidaProduto" class="form-label">Medida</label>
+                      <input formControlName="medidaProduto" type="text" class="form-control" id="medidaProduto" name="medida" placeholder="Digite a medida do produto(Kg, Unidade, Dúzia, etc...)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button [disabled]="cadastroProdutoForm.invalid" type="submit" class="btn btn-star lift-lg" value="ADICIONAR PRODUTO">Adicionar</button>
+                <button type="button" class="btn btn-star-dark lift-lg" data-bs-dismiss="modal" id="fecharCadastroProduto">Fechar</button>             
+              </div>
+            </form>
           </div>
         </div>
       </div>  
-      <!-- End modal de editar produto -->
-
-      <!-- Precisa vir preenchido -->
-       <div class="modal fade" id="modalEditarProduto" tabindex="-1" aria-labelledby="modalEditarProdutoLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      
+      <div class="modal fade" id="modalEditarProduto" tabindex="-1" aria-labelledby="modalEditarProdutoLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5 title-edit" id="exampleModalLabel">Editar produto</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST">
+            <form [formGroup]="editaProdutoForm" (submit)="editarProduto()">
               <div class="modal-body">
-                    <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
-                      <div class="mb-3">
-                        <label for="exampleInputText1" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" aria-describedby="Nome">
-                      </div>
-                      <div class="mb-3">
-                        <label for="exampleInputText2" class="form-label">Categoria</label>
-                        <input type="text" class="form-control" id="categoria" name="categoria" aria-describedby="Categoria">
-                      </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="nomeProdutoEdit" class="form-label">Nome</label>
+                      <input formControlName="nome" type="text" class="form-control" placeholder="Digite o nome do produto"
+                      id="nomeProdutoEdit" name="nome" aria-describedby="Nome">
                     </div>
-                    <div class="d-lg-flex d-md-flex gap-2 justify-content-between">
-                      <div class="mb-3">
-                        <label for="exampleInputNumber1" class="form-label">Quantidade</label>
-                        <input type="number" class="form-control" id="quantidade" name="quantidade" aria-describedby="Quantidade">
-                      </div>
-                      <div class="mb-3">
-                        <label for="exampleInputNumber2" class="form-label">Valor</label>
-                        <input type="number" step="any" class="form-control" id="valor" name="valor">
-                      </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="categoriaProdutoEdit" class="form-label">Categoria</label>
+                      <input formControlName="categoria" type="text" class="form-control" id="categoriaProdutoEdit" name="categoria" aria-describedby="Categoria" placeholder="Digite a categoria do produto(Frutas, Verduras, Raiz, Legumes)">
                     </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="quantidadeProdutoEdit" class="form-label">Quantidade</label>
+                      <input formControlName="quantidade" type="number" class="form-control" id="quantidadeProdutoEdit" name="quantidade" aria-describedby="Quantidade" placeholder="Digite a quantidade do produto">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="valorProdutoEdit" class="form-label">Valor</label>
+                      <input formControlName="valor" type="number" step="any" class="form-control" id="valorProdutoEdit" name="valor" placeholder="Digite o valor do produto">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="medidaProdutoEdit" class="form-label">Medida</label>
+                      <input formControlName="medida" type="text" class="form-control" id="medidaProdutoEdit" name="medida" placeholder="Digite a medida do produto(Kg, Unidade, Dúzia, etc...)">
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-star lift-lg" value="EDITAR PRODUTO">Editar</button>
-                <button type="button" class="btn btn-star-dark lift-lg" data-bs-dismiss="modal">Fechar</button>             
+                <button [disabled]="editaProdutoForm.invalid" type="submit" class="btn btn-star lift-lg" value="EDITAR PRODUTO">Editar</button>
+                <button type="button" class="btn btn-star-dark lift-lg" data-bs-dismiss="modal" id="fecharEditarProduto">Fechar</button>             
               </div>
-             </form>
+            </form>
           </div>
         </div>
       </div>  
      
-       <!-- Modal de deletar produto -->
        <div class="modal fade" id="modalDeletarProduto" tabindex="-1" aria-labelledby="modalDeletarProdutoLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -375,21 +396,18 @@
               <h1 class="modal-title fs-5 title-edit" id="exampleModalLabel">Atenção</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST">
-              <div class="modal-body">
-                  <h5 class="text-center title-modal-apagar">Você confirma a exclusão deste documento?</h5>
-                  <p class="text-center subtitle-modal-apagar">Todos as informações, nome, categoria, 
-                    quantidade e  valor serão apagadas !</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-star lift-lg" value="EDITAR PRODUTO">Apagar</button>
-                <button type="button" class="btn btn-danger lift-lg" data-bs-dismiss="modal">Cancelar</button>             
-              </div>
-             </form>
+            <div class="modal-body">
+                <h5 class="text-center title-modal-apagar">Você confirma a exclusão deste produto?</h5>
+                <p class="text-center subtitle-modal-apagar">Todos as informações, nome, categoria, 
+                  quantidade, unidade e valor serão apagadas !</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-star lift-lg" value="DELETAR PRODUTO" (click)="deltarProduto()">Apagar</button>
+              <button type="button" class="btn btn-danger lift-lg" data-bs-dismiss="modal" id="fecharDeletarModal">Cancelar</button>             
+            </div>
           </div>
         </div>
       </div>  
-      <!-- End modal de deletar produto -->
 
     </div>
 </div>

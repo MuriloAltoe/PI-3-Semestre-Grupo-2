@@ -12,6 +12,8 @@ import { UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 import { INovoUsuario } from 'src/app/core/model/interfaces/novo-usuario.interface';
 import { ActivatedRoute } from '@angular/router';
 import { IItem } from 'src/app/core/model/interfaces/item.interface';
+import { INewItem } from 'src/app/core/model/interfaces/novo-item.interface';
+import { ProdutoService } from 'src/app/core/services/produto/produto.service';
 
 @Component({
   selector: 'app-usuario',
@@ -19,21 +21,24 @@ import { IItem } from 'src/app/core/model/interfaces/item.interface';
   styleUrls: ['./usuario.component.scss'],
 })
 export class UsuarioComponent implements OnInit {
-  currentStep = 1;
-  totalSteps = 3;
-
   cadastroForm!: FormGroup;
+  cadastroProdutoForm!: FormGroup;
+  editaProdutoForm!: FormGroup;
+
   isProdutor = false;
   user: IUsuario | null = null;
   usuarioNome = '';
   entrega = '';
   userId = '';
   produtosList: IItem[] = [];
+  produtoDelete: IItem | null = null;
+  produtoEditar: IItem | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private route: ActivatedRoute,
+    private produtoService: ProdutoService
   ) {
     this.userId = this.route.snapshot.paramMap.get('id') || '';
   }
@@ -41,6 +46,8 @@ export class UsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.getUser();
     this.startForm();
+    this.startFormProduto();
+    this.startFormProdutoEditar();
   }
 
   startForm(): void {
@@ -87,9 +94,71 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
+  startFormProduto() {
+    this.cadastroProdutoForm = this.formBuilder.group({
+      nomeProduto: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      categoriaProduto: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      medidaProduto: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      valorProduto: ['', [Validators.required, Validators.min(0.5)]],
+      quantidadeProduto: ['', [Validators.required, Validators.min(1)]],
+    });
+  }
+
+  startFormProdutoEditar() {
+    this.editaProdutoForm = this.formBuilder.group({
+      nome: [
+        this.produtoEditar?.nome || '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      categoria: [
+        this.produtoEditar?.categoria || '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      medida: [
+        this.produtoEditar?.medida || '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      valor: [ this.produtoEditar?.preco || '', [Validators.required, Validators.min(0.5)]],
+      quantidade: [ this.produtoEditar?.quantidade || '', [Validators.required, Validators.min(1)]],
+    });
+  }
+
   validarSenhasCompativeis(control: AbstractControl): ValidationErrors | null {
     const senha = control.parent?.value.senha;
-    const confirmarSenha = control.value
+    const confirmarSenha = control.value;
     if (
       confirmarSenha &&
       confirmarSenha.length >= 8 &&
@@ -126,21 +195,20 @@ export class UsuarioComponent implements OnInit {
           this.getUser();
           document.getElementById('closeModalUsuario')?.click();
         },
-        error: (err) => console.error(err)
-      })
+        error: (err) => console.error(err),
+      });
     }
   }
 
-  getUser(){
+  getUser() {
     this.usuarioService.getUserById(this.userId).subscribe({
       next: (result) => {
-        if(result){
-          console.log(result)
+        if (result) {
           this.user = result;
           this.produtosList = result.itens;
           if (this.user) {
             this.startForm();
-            this.usuarioNome = result.nome?.split(" ")[0] || '';
+            this.usuarioNome = result.nome?.split(' ')[0] || '';
           }
           if (result.tipo == 'produtor') {
             this.isProdutor = true;
@@ -154,27 +222,76 @@ export class UsuarioComponent implements OnInit {
           }
         }
       },
-      error: (err) => console.error(err)
-    })
+      error: (err) => console.error(err),
+    });
   }
 
-  setCurrentStep(step: number) {
-    this.currentStep = step;
-  }
+  cadastrarProduto() {
+    const itemForm = this.cadastroProdutoForm.getRawValue();
+    const item: INewItem = {
+      nome: itemForm.nomeProduto,
+      preco: itemForm.valorProduto,
+      medida: itemForm.medidaProduto,
+      categoria: itemForm.categoriaProduto,
+      quantidade: itemForm.quantidadeProduto,
+      id_barraca: this.userId,
+    };
 
-  nextStep() {
-    if (this.currentStep < this.totalSteps) {
-      this.currentStep++;
+    if (this.cadastroProdutoForm.valid) {
+      this.produtoService.creatItem(item).subscribe({
+        next: () => {
+          this.getUser();
+          this.cadastroProdutoForm.reset();
+          document.getElementById('fecharCadastroProduto')?.click();
+        },
+        error: (err) => console.error(err),
+      });
     }
   }
 
-  previousStep() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
+  editarProduto() {
+    const itemForm = this.editaProdutoForm.getRawValue();
+    const item: IItem = {
+      _id: this.produtoEditar?._id || '',
+      nome: itemForm.nome,
+      preco: itemForm.valor,
+      medida: itemForm.medida,
+      categoria: itemForm.categoria,
+      quantidade: itemForm.quantidade,
+      id_barraca: this.userId,
+    };
+    if (this.editaProdutoForm.valid) {
+      this.produtoService.updateItem(item._id, item).subscribe({
+        next: () => {
+          this.getUser();
+          this.editaProdutoForm.reset();
+          document.getElementById('fecharEditarProduto')?.click();
+          this.produtoEditar = null;
+        },
+        error: (err) => console.error(err),
+      });
     }
   }
 
-  isLastStep() {
-    return this.currentStep === this.totalSteps;
+  deltarProduto() {
+    if (this.produtoDelete !== null) {
+      this.produtoService.deleteItem(this.produtoDelete._id).subscribe({
+        next: () => {
+          this.getUser();
+          document.getElementById('fecharDeletarModal')?.click();
+          this.produtoDelete = null;
+        },
+        error: (err) => console.error(err),
+      });
+    }
+  }
+
+  setProdutoDeletar(produto: IItem) {
+    this.produtoDelete = produto;
+  }
+
+  setProdutoEditar(produto: IItem){
+    this.produtoEditar = produto;
+    this.startFormProdutoEditar();
   }
 }

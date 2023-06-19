@@ -251,10 +251,9 @@ def itens(request, id):
 
     elif request.method == 'DELETE':
         collection = db["itens"]
-        data = json.loads(request.body)
         result = collection.delete_one({"_id": ObjectId(id)})
         if result.deleted_count > 0:
-            return HttpResponse(status=204, content='excluído com sucesso.')
+            return HttpResponse(status=204)
         else:
             return HttpResponseNotFound("item não encontrado")
 
@@ -276,7 +275,7 @@ def itens(request, id):
         result = collection.update_one(
             {'_id': ObjectId(id)}, {'$set': update_data})
         if result.modified_count > 0:
-            return HttpResponse(status=200, content='Atualização bem-sucedida.')
+            return HttpResponse(status=200)
         else:
             return HttpResponse(status=404, content='Nenhum documento atualizado.')
 
