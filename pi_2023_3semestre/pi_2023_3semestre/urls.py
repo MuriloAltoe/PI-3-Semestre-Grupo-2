@@ -4,12 +4,12 @@ from core.views import allUsers,usuario, itens, allItens, login, usuarioCadastro
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login', login), 
-    path('allUsers', allUsers), 
-    path('userByEmail/<str:email>', usuarioEmail),
-    path('user', usuarioCadastro),
-    path('user/<str:id>', usuario), # pega o usuario baseado no id(pelo url)
-    path('allItens', allItens), #serve pra pegar todos os items
-    path('item/<str:id>', itens), #serve pra pegar os items especificos do usuario(pelo url)
-    path('item', itemCadastro),
+    path('login', login, name='login'), 
+    path('allUsers', allUsers, name='allUsers'), 
+    path('userByEmail/<str:email>', usuarioEmail, name='userByEmail'),
+    path('user', usuarioCadastro, name='usercadastro'),
+    path('user/<str:id>', usuario, name='user'), # pega o usuario baseado no id(pelo url)
+    path('allItens', allItens, name='allItens'), #serve pra pegar todos os items
+    path('item/<str:id>', itens, name='itens'), #serve pra pegar os items especificos do usuario(pelo url)
+    path('item', itemCadastro, name='itemcadastro'),
 ]

@@ -22,7 +22,7 @@ def login(request):
         data = json.loads(request.body)
         
         pipeline = [
-            {"$match": {"email": data["email"]}},
+            {"$match": {"email": data["email"], "senha": data["senha"]}},
             {
                 '$project': {
                     '_id': {'$toString': '$_id'},
@@ -45,7 +45,6 @@ def login(request):
         result = list(collection.aggregate(pipeline))
 
         if len(result) > 0:
-            print(result[0])
             if (result[0]['senha'] == data['senha']):
 
                 payload = {
@@ -381,7 +380,6 @@ def usuarioEmail(request, email):
     db = conn["banco"]
 
     if request.method == 'GET':
-        print(email)
         collection = db["barraca"]
         pipeline = [
             {"$match": {"email": email}},
@@ -406,7 +404,6 @@ def usuarioEmail(request, email):
         ]
         barraca = list(collection.aggregate(pipeline))
         if len(barraca) > 0:
-            print(barraca[0])
             collection = db["itens"]
             pipeItens = [
                 {"$match": {"id_barraca": barraca[0]["_id"]}},
