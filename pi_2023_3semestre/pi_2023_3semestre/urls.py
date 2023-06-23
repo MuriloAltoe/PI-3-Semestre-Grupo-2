@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from core.views import allUsers,usuario, itens, allItens, login, usuarioCadastro, itemCadastro, usuarioEmail
+from core.views import allUsers,usuario, itens, allItens, login, usuarioCadastro, itemCadastro, usuarioEmail, findUserByFilter
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('allItens', allItens), #serve pra pegar todos os items
     path('item/<str:id>', itens), #serve pra pegar os items especificos do usuario(pelo url)
     path('item', itemCadastro),
+    path('userByFilter', findUserByFilter),
 ]
