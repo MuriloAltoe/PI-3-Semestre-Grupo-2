@@ -1,0 +1,66 @@
+.table {
+  border:1px solid gray;
+
+  td{
+    padding: 10px;
+  }
+}
+
+.btn-modal {
+  border: none;
+}
+
+.title-edit {
+  border-bottom: 4px solid #588157;
+  line-height: 40px;
+  width: 70%;
+}
+
+.btn-star {
+  background-color: #588157;
+  color: white;
+  font-weight: medium;
+}
+
+.btn-star-dark {
+  background-color: #1B211B;
+  color: white;
+  font-weight: medium;
+}
+
+.th-table{
+  width: 100px;
+}
+
+// Animação de botão
+.lift-lg {
+  transition: 0.4s;
+}
+
+.lift:focus, .lift:hover {
+  -webkit-transform: translate3d(0, -3px, 0);
+          transform: translate3d(0, -3px, 0);
+}
+
+.lift-lg:focus, .lift-lg:hover {
+  -webkit-transform: translate3d(0, -6px, 0);
+          transform: translate3d(0, -6px, 0);
+}
+
+// modal apagar
+
+.title-modal-apagar {
+  font-weight: 600;
+  font-size: 23px;
+}
+
+.subtitle-modal-apagar {
+  font-weight: 200;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+
+.modal-edit{
+  padding: 40px;
+}

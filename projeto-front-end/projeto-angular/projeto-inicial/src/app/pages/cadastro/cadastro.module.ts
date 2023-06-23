@@ -1,7 +1,9 @@
+import { VMessageModule } from './../../shared/vmessage/vmessage.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CadastroComponent } from './cadastro/cadastro.component';
-import { CadastroRoutingModule } from './cadastro-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -11,8 +13,13 @@ import { CadastroRoutingModule } from './cadastro-routing.module';
   ],
   imports: [
     CommonModule,
-    CadastroRoutingModule,
-    
+    ReactiveFormsModule,
+    FormsModule,
+    VMessageModule,
+    RouterModule
+  ],
+  exports: [
+    CadastroComponent
   ]
 })
 export class CadastroModule { }

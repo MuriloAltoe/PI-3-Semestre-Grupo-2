@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { EMPTY, catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs';
 import { IUsuario } from 'src/app/core/model/interfaces/usuario.interface';
 import { UsuarioService } from 'src/app/core/services/usuario/usuario.service';
+
+const PAUSA = 300;
 
 @Component({
   selector: 'app-home',
@@ -8,41 +12,95 @@ import { UsuarioService } from 'src/app/core/services/usuario/usuario.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  usuario: IUsuario[] = [];
-  usu!: IUsuario;
+
+  listProdutores: IUsuario[] = []
+  campoBusca = new FormControl();
+  campoBuscaCidade = new FormControl();
+  campoBuscaProduto = new FormControl();
+
+  cidade = '';
+  produto = '';
 
   constructor(private service: UsuarioService) {}
 
   ngOnInit(): void {
-    /**  this.usu = {id:2,name:'Ester', email:'ester@gmail.com', senha:'123'};
-    this.service.creatUser(this.usu).subscribe({
-      next: () => console.log('registrou'),
-      error: (err) => console.error(err)      
-    });
-    this.service.deleteUser(2).subscribe({
-      next: () => console.log('deletou'),
-      error: (err) => console.error(err)      
-    });*/
+    this.getProdutores();
+
+    this.campoBusca.valueChanges.subscribe({
+      next: (value: string) => {
+        if(value !== null){
+          if(value.length === 0){
+            this.getProdutores();
+          }
+          if(value.length >= 3){
+            this.getByFilter(`cidade=${value}`);
+          }
+        } else {
+          this.getProdutores();
+        }
+      }
+    })
+    
+    this.campoBuscaCidade.valueChanges.subscribe({
+      next: (value: string) => {
+        if(value !== null){
+          this.cidade = '';
+          if(value.length === 0 && this.produto == ''){
+            this.getProdutores();
+            return;
+          }
+          if(value.length >= 3){
+            this.cidade = value;
+            if(this.produto !== ''){
+              this.getByFilter(`cidade=${value}&item=${this.produto}`);
+            } else {
+              this.getByFilter(`cidade=${value}`);
+            }
+          }
+        } else {
+          this.cidade = '';
+          this.getProdutores();
+        }
+      }
+    })
+
+    this.campoBuscaProduto.valueChanges.subscribe({
+      next: (value: string) => {
+        if(value !== null){
+          this.produto = ''
+          if(value.length === 0 && this.cidade == ''){
+            this.getProdutores();
+            return;
+          }
+          if(value.length >= 3){
+            this.produto = value;
+            if(this.cidade !== ''){
+              this.getByFilter(`cidade=${this.cidade}&item=${this.produto}`);
+            } else {
+              this.getByFilter(`item=${this.produto}`);
+            }
+          }
+        } else {
+          this.produto = '';
+          this.getProdutores();
+        }
+      }
+    })
+  }
+
+  getProdutores(): void {
     this.service.getAllUser().subscribe({
-      next: (user) => {
-        this.usuario = user;
-        console.log(this.usuario);
+      next: (produtores) => {
+        this.listProdutores = produtores;
       },
       error: (err) => console.error(err),
     });
-
-    this.service.deleteUser(0).subscribe({
-      next: (usuario) => {
-        console.log(usuario);
-      },
-      error: (err) => {
-        console.error('Exclusão falhou, ', err);
-      },
-    });
   }
 
-  returnPalavras(){
-   
-    return 'color: red';
+  getByFilter(filter: string): void{
+    this.service.findByFilter(filter).subscribe({
+      next: (produtores) => this.listProdutores = produtores,
+      error: (err) => console.error(err)
+    })
   }
 }

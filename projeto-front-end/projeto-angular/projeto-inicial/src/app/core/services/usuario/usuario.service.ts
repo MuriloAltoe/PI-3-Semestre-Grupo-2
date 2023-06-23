@@ -1,24 +1,56 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, tap, timer } from 'rxjs';
 import { IUsuario } from '../../model/interfaces/usuario.interface';
+import { UserService } from '../user/user.service';
+import { INovoUsuario } from '../../model/interfaces/novo-usuario.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
-  private readonly url = 'http://localhost:3000/';
-  constructor(private httpclient: HttpClient) {}
+  private readonly url = environment.urlApi;
+
+  constructor(private httpclient: HttpClient, private userService: UserService) {}
 
   getAllUser(): Observable<IUsuario[]> {
-    return this.httpclient.get<IUsuario[]>(`${this.url}usuario`);
+    return this.httpclient.get<IUsuario[]>(`${this.url}allUsers`);
   }
 
-  creatUser(usuaurio: IUsuario): Observable<IUsuario>{
-    return this.httpclient.post<IUsuario>(`${this.url}usuario`, usuaurio);
+  getUserById(id: string): Observable<IUsuario> {
+    return this.httpclient.get<IUsuario>(`${this.url}user/${id}`);
   }
 
-  deleteUser(id: number): Observable<IUsuario>{
-    return this.httpclient.delete<IUsuario>(`${this.url}usuario/${id}`);
+  creatUser(usuaurio: INovoUsuario): Observable<IUsuario>{
+    return this.httpclient.post<IUsuario>(`${this.url}user`, usuaurio);
+  }
+
+  updateUser(id: string, usuaurio: INovoUsuario): Observable<IUsuario>{
+    return this.httpclient.put<IUsuario>(`${this.url}user/${id}`, usuaurio);
+  }
+
+  authenticate(userName: string, password: string): Observable<HttpResponse<any>> {
+    return this.httpclient
+      .post<any>(
+        `${this.url}login`,
+        { email: userName, senha: password},
+        { observe: 'response' }
+      )
+      .pipe(
+        tap((res) => {
+          if(res.body.token){ 
+            this.userService.setToken(res.body.token);
+          }
+        })
+      );
+  }
+
+  checkUserExists(email: string): Observable<IUsuario> {
+    return this.httpclient.get<IUsuario>(`${this.url}userByEmail/${email}`);
+  }
+
+  findByFilter(filter: string): Observable<IUsuario[]>{
+    return this.httpclient.get<IUsuario[]>(`${this.url}userByFilter?${filter}`);
   }
 }

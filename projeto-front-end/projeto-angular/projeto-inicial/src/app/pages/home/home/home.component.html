@@ -1,31 +1,69 @@
 <div class="container">
-    <div class="p-4 p-md-5 mb-4 rounded row">
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic" style="margin-top: 20%;">Title of a longer featured blog post</h1>
-            <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and
-                efficiently about what’s most interesting in this post’s contents.</p>
-            <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
-        </div>
-        <div class="col-md-6 px-0">
-            <img src="./../../../../assets/img/cesta-mixta.webp" class="img-fluid" alt="" style="height: 500px;">
-        </div>
-
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="pesquise por produto desejado" aria-label="Search">
-        </form>
-
-        <p *ngFor="let user of usuario" [ngStyle]="[returnPalavras()]">
-            {{user.name}}
-            {{returnPalavras()}}
-        </p>
+  <div class="p-4 p-md-5 mb-4 rounded row">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 fst-italic" style="margin-top: 20%;">StardewGreen Produtos 100% Orgânicos</h1>
+      <p class="lead my-3">Se você busca uma maneira fácil e eficiente de encontrar e adquirir produtos 100% orgânicos
+        diretamente dos produtores, você está prestes a descobrir uma solução inovadora.</p>
+    </div>
+    <div class="col-md-6 px-0">
+      <img src="./../../../../assets/img/cesta-mixta.webp" class="img-fluid" alt="" style="height: 500px;">
     </div>
 
-</div>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link color-text active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+          type="button" role="tab" aria-controls="nav-home" aria-selected="true" (click)="getProdutores()">Todos Produtores</button>
+        <button class="nav-link color-text" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+          type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Por produto</button>
+      </div>
+    </nav>
+  </div>
 
-
-
-<div class="container">
-    <footer class="py-4 my-4 border-top ">
-        <p class="text-center text-body-secondary ">© 2023 Company, Inc</p>
-    </footer>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+      <div class="row mb-4">
+        <div class="col-3"></div>
+        <form class="d-flex col-6" role="search">
+          <input class="form-control me-2" type="search" placeholder="pesquise pela cidade desejada"
+            aria-label="Search" [formControl]="campoBusca">
+        </form>
+        <div class="col-3"></div>
+      </div>
+     
+      <div class="row w-100 m-0" *ngIf="listProdutores.length <= 0">
+        <p class="text-center">nenhuma barraca encontrada</p>
+      </div>
+      <div class="row w-100 m-0" *ngIf="listProdutores.length > 0">
+        <div class="col-6" *ngFor="let produtor of listProdutores">
+          <div *ngIf="produtor.tipo == 'produtor'">
+             <app-barraca [produtor]="produtor"></app-barraca>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+      <div class="row mb-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="pesquise pela cidade desejada"
+              aria-label="Search" [formControl]="campoBuscaCidade">
+            <input class="form-control me-2" type="search" placeholder="pesquise pelo produto desejado"
+              aria-label="Search" [formControl]="campoBuscaProduto">
+          </form>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      <div class="row w-100 m-0" *ngIf="listProdutores.length <= 0">
+        <p class="text-center">nenhuma barraca encontrada</p>
+      </div>
+      <div class="row w-100 m-0" *ngIf="listProdutores.length > 0">
+        <div class="col-6" *ngFor="let produtor of listProdutores">
+          <div *ngIf="produtor.tipo == 'produtor'">
+            <app-barraca [produtor]="produtor"></app-barraca>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

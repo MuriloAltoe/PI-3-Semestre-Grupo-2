@@ -1,46 +1,91 @@
 from django.shortcuts import render
 import json
 import jwt
+import pymongo
 from bson import ObjectId
 from datetime import datetime, timedelta
-from django.http import HttpResponse, JsonResponse
-# from .models import Usuario, Barraca, Itens
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
+from django.urls import reverse
+
 from django.views.decorators.csrf import csrf_exempt
 
-import pymongo
-from pymongo import InsertOne
+localhost = "mongodb://localhost:27017/"
 
-localhost="mongodb://localhost:27017/"
 
 @csrf_exempt
 def login(request):
+    conn = conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
     if request.method == 'POST':
-        conn = conn = pymongo.MongoClient(localhost)
-        db = conn["banco"]
         collection = db["barraca"]
         data = json.loads(request.body)
-
-        result = collection.find({
-            "email" : data["email"],
-            "senha" : data["senha"],
-        })
-
-        if result.count() > 0:
-            payload = {
-                'user_id': str(result[0]['_id']),
-                'exp': datetime.utcnow() + timedelta(minutes=15)
+        
+        pipeline = [
+            {"$match": {"email": data["email"]}},
+            {
+                '$project': {
+                    '_id': {'$toString': '$_id'},
+                    "email": "$email",
+                    "nome": "$nome",
+                    "tipo": "$tipo",
+                    "senha": "$senha",
+                    "entrega": "$entrega",
+                    "cep": "$cep",
+                    "rua": "$rua",
+                    "cidade": "$cidade",
+                    "complemento": "$complemento",
+                    "bairro": "$bairro",
+                    "numero": "$numero",
+                    "estado": "$estado",
+                    "telefone": "$telefone"
+                }
             }
-            # Gera o tolken
-            secret_key = 'stardewgreen'
-            token = jwt.encode(payload, secret_key, algorithm='HS256')
+        ]
+        result = list(collection.aggregate(pipeline))
 
-            response = HttpResponse(token)
+        if len(result) > 0:
+            print(result[0])
+            if (result[0]['senha'] == data['senha']):
 
-            response["x-access-token"] = token
-
-            return response
+                payload = {
+                    'user': result[0],
+                    'exp': datetime.utcnow() + timedelta(minutes=15)
+                }
+               
+                secret_key = 'stardewgreen'
+                token = jwt.encode(payload, secret_key, algorithm='HS256')
+                response = HttpResponse()
+                response["x-access-token"] = token
+                response.content = json.dumps({'token': token})
+                return response
+            else:
+                response = HttpResponse("Acesso não autorizado.")
+                response.status_code = 401
+                return response
         else:
-            return HttpResponse("usuario não encontrado")
+            return HttpResponseNotFound("usuario não encontrado")
+
+
+@csrf_exempt
+def usuarioCadastro(request):
+    conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
+    if request.method == 'POST':
+        collection = db["barraca"]
+        data = json.loads(request.body)
+        try:
+            result = collection.insert_one(data)
+            if result.inserted_id:
+                objeto_id = str(result.inserted_id)
+                response = HttpResponse(status=201)
+                response['Location'] = f'/user/{objeto_id}'
+                return response
+            else:
+                return HttpResponse("Falha no cadastro.", status=400)
+        except Exception as e:
+            return HttpResponse(f"Erro durante a inserção: {str(e)}", status=500)
 
 
 @csrf_exempt
@@ -51,63 +96,59 @@ def usuario(request, id):
     if request.method == 'GET':
         collection = db["barraca"]
         objId = ObjectId(id)
-        usuario = list(collection.aggregate([{ "$match": { "_id": objId } }]))
+        pipeline = [
+            {"$match": {"_id": objId}},
+            {
+                '$project': {
+                    '_id': {'$toString': '$_id'},
+                    "email": "$email",
+                    "nome": "$nome",
+                    "tipo": "$tipo",
+                    "senha": "$senha",
+                    "entrega": "$entrega",
+                    "cep": "$cep",
+                    "rua": "$rua",
+                    "cidade": "$cidade",
+                    "complemento": "$complemento",
+                    "bairro": "$bairro",
+                    "numero": "$numero",
+                    "estado": "$estado",
+                    "telefone": "$telefone"
+                }
+            }
+        ]
+        barraca = list(collection.aggregate(pipeline))
+        if len(barraca) > 0:
+            collection = db["itens"]
+            pipeItens = [
+                {"$match": {"id_barraca": barraca[0]["_id"]}},
+                {"$sort": {"_id": -1}},
+                {
+                    "$project": {
+                        "_id": {"$toString": "$_id"},
+                        "nome": "$nome",
+                        "preco": "$preco",
+                        "medida": "$medida",
+                        "categoria": "$categoria",
+                        "quantidade": "$quantidade",
+                        "id_barraca": "$id_barraca"
+                    }
+                }
+            ]
+            itens = list(collection.aggregate(pipeItens))
+            itens2 = []
+            for item in itens:
+                itens2.append(item)
 
-        result2 = dict(usuario[0])
+            barraca[0]["itens"] = itens2
+            retorno = json.dumps(barraca[0])
+            return HttpResponse(retorno, content_type='application/json')
+        else:
+            return HttpResponseNotFound("usuario não encontrado")
 
-        collection = db["itens"]
-        itens = list(collection.aggregate([{ "$match": { "id_items": objId } }])) 
-        itens2 = []
-        for i in itens:
-            itens2.append(i)       
-
-        dictRetorno = {   
-            "_id"         :str(result2["_id"]),                
-            "email"       :result2["email"],      
-            "nome"        :result2["nome"],
-            "tipo"        :result2["tipo"],
-            "senha"       :result2["senha"],
-            "entrega"     :result2["entrega"],
-            "cep"         :result2["cep"],
-            "rua"         :result2["rua"],
-            "cidade"      :result2["cidade"],
-            "complemento" :result2["complemento"],
-            "bairro"      :result2["bairro"],
-            "numeros"     :result2["numeros"],
-            "estado"      :result2["estado"],
-            "telefone"    :result2["telefone"],
-            "id_usuario"  :result2["id_usuario"],
-        }
-        return JsonResponse(dictRetorno)
-         
-    elif request.method == 'POST':
-        collection = db["barraca"]
-        data = json.loads(request.body)
-        
-        dictRetorno = {   
-            "email"       :data["email"],      
-            "nome"        :data["nome"],
-            "tipo"        :data["tipo"],
-            "senha"       :data["senha"],
-            "entrega"     :data["entrega"],
-            "cep"         :data["cep"],
-            "rua"         :data["rua"],
-            "cidade"      :data["cidade"],
-            "complemento" :data["complemento"],
-            "bairro"      :data["bairro"],
-            "numeros"     :data["numeros"],
-            "estado"      :data["estado"],
-            "telefone"    :data["telefone"],     
-        }
-
-        collection.insert_one(dictRetorno)
-
-        return HttpResponse("Requisição POST processada com sucesso!")
-    
     elif request.method == 'PUT':
         collection = db["barraca"]
         data = json.loads(request.body)
-
         dictRetorno = {}
         if 'email' in data:
             dictRetorno['email'] = data['email']
@@ -122,35 +163,58 @@ def usuario(request, id):
         if 'cep' in data:
             dictRetorno['cep'] = data['cep']
         if 'rua' in data:
-            dictRetorno['rua'] = data['rua']    
+            dictRetorno['rua'] = data['rua']
         if 'cidade' in data:
             dictRetorno['cidade'] = data['cidade']
         if 'complemento' in data:
             dictRetorno['complemento'] = data['complemento']
         if 'bairro' in data:
             dictRetorno['bairro'] = data['bairro']
-        if 'numeros' in data:
-            dictRetorno['numeros'] = data['numeros']
+        if 'numero' in data:
+            dictRetorno['numero'] = data['numero']
         if 'estado' in data:
             dictRetorno['estado'] = data['estado']
         if 'telefone' in data:
             dictRetorno['telefone'] = data['telefone']
 
-        result = collection.update_one({'_id': id}, {'$set': dictRetorno})
-        
+        result = collection.update_one(
+            {'_id': ObjectId(id)}, {'$set': dictRetorno})
+
         if result.modified_count > 0:
-            return JsonResponse({'message': '>:D'})
+            return HttpResponse(status=200)
         else:
-            return JsonResponse({'message': '>:c'})
+            return HttpResponse(status=404)
 
     elif request.method == 'DELETE':
         collection = db["barraca"]
         data = json.loads(request.body)
-        collection.delete_one({"_id":ObjectId(data['id'])})
-        return HttpResponse()
+        result = collection.delete_one({"_id": ObjectId(id)})
 
-    else:
-        return HttpResponse("Método não permitido. Use POST para enviar dados.")
+        if result.deleted_count > 0:
+            return HttpResponse(status=204)
+        else:
+            return HttpResponseNotFound("usuario não encontrado")
+
+
+@csrf_exempt
+def itemCadastro(request):
+    conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
+    if request.method == 'POST':
+        collection = db["itens"]
+        data = json.loads(request.body)
+        try:
+            result = collection.insert_one(data)
+            if result.inserted_id:
+                objeto_id = str(result.inserted_id)
+                response = HttpResponse(status=201)
+                response['Location'] = f'/item/{objeto_id}'
+                return response
+            else:
+                return HttpResponse("Falha no cadastro.", status=400)
+        except Exception as e:
+            return HttpResponse(f"Erro durante a inserção: {str(e)}", status=500)
 
 
 @csrf_exempt
@@ -162,41 +226,39 @@ def itens(request, id):
 
         collection = db["itens"]
         objId = ObjectId(id)
-        itens = list(collection.aggregate([{ "$match": { "_id": objId }}])) 
-        print(itens)
-        itens2 = []
-        for i in itens:
-            itens2.append(i)
 
-        return HttpResponse(itens2)
+        pipeline = [
+            {'$match': {"_id": objId}},
+            {
+                '$project': {
+                    '_id': {'$toString': '$_id'},
+                    "nome": "$nome",
+                    "preco": "$preco",
+                    "medida": "$medida",
+                    "categoria": "$categoria",
+                    "quantidade": "$quantidade",
+                    "id_barraca": "$id_barraca"
+                }
+            }
+        ]
 
-    elif request.method == 'POST':
-        collection = db["itens"]
-        data = json.loads(request.body)
-
-        dictRetorno = {
-            "nome": data['nome'],
-            "preco": data['preco'],
-            "medida": data['medida'],
-            "categoria": data['categoria'],
-            "quantidade": data['quantidade'],
-            "id_usuario": ObjectId(data['id_usuario'])
-        }
-
-        collection.insert_one(dictRetorno)
-        return JsonResponse(data)
+        item = list(collection.aggregate(pipeline))
+        if len(item) > 0:
+            return HttpResponse(json.dumps(item[0]), content_type='application/json')
+        else:
+            return HttpResponseNotFound("item não encontrado")
 
     elif request.method == 'DELETE':
         collection = db["itens"]
-        data = json.loads(request.body)
-        collection.delete_one({"_id":ObjectId(data['id'])})
-        return HttpResponse()
+        result = collection.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count > 0:
+            return HttpResponse(status=204)
+        else:
+            return HttpResponseNotFound("item não encontrado")
 
     elif request.method == 'PUT':
         collection = db["itens"]
         data = json.loads(request.body)
-        objId = ObjectId(data['id'])
-
         update_data = {}
         if 'nome' in data:
             update_data['nome'] = data['nome']
@@ -209,14 +271,12 @@ def itens(request, id):
         if 'quantidade' in data:
             update_data['quantidade'] = data['quantidade']
 
-        result = collection.update_one({'_id': objId}, {'$set': update_data})
+        result = collection.update_one(
+            {'_id': ObjectId(id)}, {'$set': update_data})
         if result.modified_count > 0:
-            return JsonResponse({'message': '>:D'})
+            return HttpResponse(status=200)
         else:
-            return JsonResponse({'message': '>:c'})
-         
-    else:
-        return HttpResponse("Método não permitido. Use POST para enviar dados.")
+            return HttpResponse(status=404, content='Nenhum documento atualizado.')
 
 
 @csrf_exempt
@@ -226,29 +286,51 @@ def allUsers(request):
 
     if request.method == 'GET':
         collection = db['barraca']
-        pipeline=[{
+        pipeline = [{
             '$project': {
-                '_id': {'$toString': '$_id'}, 
-                "email":"$email",          
-                "nome":"$nome",         
-                "tipo":"$tipo",       
-                "senha":"$senha",   
-                "entrega":"$entrega",   
-                "cep":"$cep", 
-                "rua":"$rua",
-                "cidade":"$cidade",
-                "complemento" :"$complemento",
-                "bairro":"$bairro",   
-                "numeros":"$numeros", 
-                "estado":"$estado",
-                "telefone":"$telefone",
-                "id_usuario":"$id_usuario",
+                '_id': {'$toString': '$_id'},
+                "email": "$email",
+                "nome": "$nome",
+                "tipo": "$tipo",
+                "senha": "$senha",
+                "entrega": "$entrega",
+                "cep": "$cep",
+                "rua": "$rua",
+                "cidade": "$cidade",
+                "complemento": "$complemento",
+                "bairro": "$bairro",
+                "numero": "$numero",
+                "estado": "$estado",
+                "telefone": "$telefone"
             }
         }]
         barraca = list(collection.aggregate(pipeline))
-        
+
         barraca2 = []
         for i in barraca:
+            collection = db["itens"]
+            pipeItens = [
+                {"$match": {"id_barraca": i["_id"]}},
+                {"$sort": {"_id": -1}},
+                {"$limit": 3},
+                {
+                    "$project": {
+                        "_id": {"$toString": "$_id"},
+                        "nome": "$nome",
+                        "preco": "$preco",
+                        "medida": "$medida",
+                        "categoria": "$categoria",
+                        "quantidade": "$quantidade",
+                        "id_barraca": "$id_barraca"
+                    }
+                }
+            ]
+            itens = list(collection.aggregate(pipeItens))
+            itens2 = []
+            for item in itens:
+                itens2.append(item)
+
+            i["itens"] = itens2
             barraca2.append(i)
 
         retorno = json.dumps(barraca2)
@@ -262,28 +344,89 @@ def allItens(request):
 
     if request.method == 'GET':
         collection = db["itens"]
-        pipeline = [{
-        '$project': {
-            '_id': {'$toString': '$_id'},  # Converter ObjectId para string
-            "id_item": "$id_item",
-            "nome": "$nome",
-            "preco": "$preco",
-            "medida": "$medida",
-            "categoria": "$categoria",
-            "quantidade": "$quantidade",
-            "id_usuario": "$id_usuario"
-        }
-        }]
+        pipeline = [
+            {"$sort": {"_id": -1}},
+            {
+                '$project': {
+                    '_id': {'$toString': '$_id'},
+                    "nome": "$nome",
+                    "preco": "$preco",
+                    "medida": "$medida",
+                    "categoria": "$categoria",
+                    "quantidade": "$quantidade",
+                    "id_barraca": "$id_barraca"
+                }
+            }
+        ]
 
-        itens = list(collection.aggregate(pipeline)) 
-
+        itens = list(collection.aggregate(pipeline))
         itens2 = []
+
         for i in itens:
             itens2.append(i)
 
-            retorno = json.dumps(itens2)
+        retorno = json.dumps(itens2)
 
         return HttpResponse(retorno, content_type='application/json')
 
     else:
         return HttpResponse("Método não permitido. Use GET para enviar dados.")
+
+@csrf_exempt
+def usuarioEmail(request, email):
+    conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
+    if request.method == 'GET':
+        print(email)
+        collection = db["barraca"]
+        pipeline = [
+            {"$match": {"email": email}},
+            {
+                '$project': {
+                    '_id': {'$toString': '$_id'},
+                    "email": "$email",
+                    "nome": "$nome",
+                    "tipo": "$tipo",
+                    "senha": "$senha",
+                    "entrega": "$entrega",
+                    "cep": "$cep",
+                    "rua": "$rua",
+                    "cidade": "$cidade",
+                    "complemento": "$complemento",
+                    "bairro": "$bairro",
+                    "numero": "$numero",
+                    "estado": "$estado",
+                    "telefone": "$telefone"
+                }
+            }
+        ]
+        barraca = list(collection.aggregate(pipeline))
+        if len(barraca) > 0:
+            print(barraca[0])
+            collection = db["itens"]
+            pipeItens = [
+                {"$match": {"id_barraca": barraca[0]["_id"]}},
+                {"$sort": {"_id": -1}},
+                {
+                    "$project": {
+                        "_id": {"$toString": "$_id"},
+                        "nome": "$nome",
+                        "preco": "$preco",
+                        "medida": "$medida",
+                        "categoria": "$categoria",
+                        "quantidade": "$quantidade",
+                        "id_barraca": "$id_barraca"
+                    }
+                }
+            ]
+            itens = list(collection.aggregate(pipeItens))
+            itens2 = []
+            for item in itens:
+                itens2.append(item)
+
+            barraca[0]["itens"] = itens2
+            retorno = json.dumps(barraca[0])
+            return HttpResponse(retorno, content_type='application/json')
+        else:
+            return HttpResponseNotFound("usuario não encontrado")
