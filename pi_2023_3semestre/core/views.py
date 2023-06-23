@@ -188,7 +188,6 @@ def usuario(request, id):
     elif request.method == 'DELETE':
         collection = db["barraca"]
         data = json.loads(request.body)
-
         result = collection.delete_one({"_id": ObjectId(id)})
 
         if result.deleted_count > 0:
@@ -338,7 +337,6 @@ def allUsers(request):
 
         return HttpResponse(retorno, content_type='application/json')
 
-
 @csrf_exempt
 def allItens(request):
     conn = pymongo.MongoClient(localhost)
@@ -373,7 +371,6 @@ def allItens(request):
 
     else:
         return HttpResponse("Método não permitido. Use GET para enviar dados.")
-
 
 @csrf_exempt
 def usuarioEmail(request, email):
