@@ -91,7 +91,12 @@ export class HomeComponent implements OnInit {
   getProdutores(): void {
     this.service.getAllUser().subscribe({
       next: (produtores) => {
-        this.listProdutores = produtores;
+        const pro: IUsuario[] = [];
+        produtores.forEach((produtor) => {
+          if(produtor.tipo == 'produtor')
+          pro.push(produtor)
+        })
+        this.listProdutores = pro;
       },
       error: (err) => console.error(err),
     });
@@ -99,7 +104,14 @@ export class HomeComponent implements OnInit {
 
   getByFilter(filter: string): void{
     this.service.findByFilter(filter).subscribe({
-      next: (produtores) => this.listProdutores = produtores,
+      next: (produtores) => {
+        const pro: IUsuario[] = [];
+        produtores.forEach((produtor) => {
+          if(produtor.tipo == 'produtor')
+          pro.push(produtor)
+        })
+        this.listProdutores = pro;
+      },
       error: (err) => console.error(err)
     })
   }
