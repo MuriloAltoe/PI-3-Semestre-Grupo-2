@@ -9,6 +9,7 @@ import { FooterModule } from './pages/footer/footer.module';
 import { HeaderModule } from './pages/header/header.module';
 import { UsuarioModule } from './pages/usuario/usuario.module';
 import { HomeModule } from './pages/home/home.module';
+import { PerfilBarracaModule } from './pages/perfil-barraca/perfil-barraca.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HomeModule } from './pages/home/home.module';
     FooterModule,
     HeaderModule,
     UsuarioModule,
-    HomeModule
+    HomeModule,
+    PerfilBarracaModule,
   ],
   bootstrap: [AppComponent]
 })

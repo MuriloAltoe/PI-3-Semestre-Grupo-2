@@ -1,4 +1,4 @@
-<div class="container row" [routerLink]="['/']">
+<div class="container row" [routerLink]="['/barraca', id]">
     <img src="./../../../../assets/img/feira-barraca.png" width="400px" alt="Imagem">
     <div class="texto col-4 texto-produto">
         <div class="row text-center produtor">
@@ -6,7 +6,7 @@
                 <h6>Barraca do(a)</h6>
             </div>
             <div class="col-12 nome p-0">
-                <h3>Witer</h3>
+                <h3>{{nome}}</h3>
             </div>
         </div>
     </div>
@@ -14,30 +14,30 @@
     <div class="texto col-4 texto-produto-1">
         <div class="row text-center produtor">
             <div class="col-12 p-0">
-                <h4>Brocolis</h4>
+                <h4>{{item1?.nome}}</h4>
             </div>
             <div class="col-12 nome p-0">
-                <h4>R$ 7,80</h4>
+                <h4 *ngIf="item1?.preco">R${{item1?.preco}}</h4>
             </div>
         </div>
     </div>
     <div class="texto col-4 texto-produto-2">
         <div class="row text-center produtor">
             <div class="col-12 p-0">
-                <h4>Batata</h4>
+                <h4>{{item2?.nome}}</h4>
             </div>
             <div class="col-12 nome p-0">
-                <h4>R$ 7,80</h4>
+                <h4 *ngIf="item2?.preco">R${{item2?.preco}}</h4>
             </div>
         </div>
     </div>
     <div class="texto col-4 texto-produto-3">
         <div class="row text-center produtor">
             <div class="col-12 p-0">
-                <h4>Couve Flor</h4>
+                <h4>{{item3?.nome}}</h4>
             </div>
             <div class="col-12 nome p-0">
-                <h4>R$ 7,80</h4>
+                <h4 *ngIf="item3?.preco">R${{item3?.preco}}</h4>
             </div>
         </div>
     </div>

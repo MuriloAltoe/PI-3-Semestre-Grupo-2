@@ -5,7 +5,10 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [BarracaComponent],
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule, 
+    RouterModule
+  ],
   exports: [BarracaComponent],
 })
 export class BarracaModule {}

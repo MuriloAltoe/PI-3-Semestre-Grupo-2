@@ -50,4 +50,7 @@ export class UsuarioService {
     return this.httpclient.get<IUsuario>(`${this.url}userByEmail/${email}`);
   }
 
+  findByFilter(filter: string): Observable<IUsuario[]>{
+    return this.httpclient.get<IUsuario[]>(`${this.url}userByFilter?${filter}`);
+  }
 }

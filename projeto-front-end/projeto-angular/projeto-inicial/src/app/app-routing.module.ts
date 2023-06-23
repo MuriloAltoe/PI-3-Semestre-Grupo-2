@@ -6,6 +6,7 @@ import { ContatoComponent } from './pages/contato/contato/contato.component';
 import { SobreComponent } from './pages/sobre/sobre/sobre.component';
 import { UsuarioComponent } from './pages/usuario/usuario/usuario/usuario.component';
 import { AuthGuard } from './core/services/auth/auth-guard';
+import { PerfilBarracaComponent } from './pages/perfil-barraca/perfil-barraca/perfil-barraca.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,10 @@ const routes: Routes = [
     path: 'usuario/:id',
     component: UsuarioComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'barraca/:id',
+    component: PerfilBarracaComponent
   },
 ];
 

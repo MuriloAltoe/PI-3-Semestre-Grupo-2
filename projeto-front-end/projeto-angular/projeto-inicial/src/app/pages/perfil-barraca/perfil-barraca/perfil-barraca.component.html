@@ -1,0 +1,110 @@
+<div class="row mt-5 pt-5 w-100 m-0">
+    <div class="col-5 mt-5">
+        <div class="row">
+            <h1>Bem Vindo(a) à barraca do(a) {{usuarioNome}}</h1>
+            <p>Aqui você encontra os produtos disponíveis pelo produtor escolhido</p>
+        </div>
+
+        <div class="row mt-5">
+            <h5>NAVEGUE PELO QUE TEMOS E MELHOR</h5>
+            <p>Conectando pessoas à natureza através de
+                escolhas saudáveis e sustentáveis.</p>
+        </div>
+
+        <div class="row mt-5 w-100">
+            <button [routerLink]="['/home']" type="button" class="btn btn-success m-0">CONFIRA OS PRODUTOS QUE ESTÃO AO SEU ALCANCE</button>
+        </div>
+    </div>
+    <div class="col-7">
+        <div class="card p-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
+                        <h2>Informações do produtor</h2>
+                    </div>
+                    <div class="col-3">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h6 class="m-0">Nome:</h6>
+                        <p>{{user?.nome}}</p>
+                        <h6 class="m-0">E-mail:</h6>
+                        <p>{{user?.email}}</p>
+                        <h6 class="m-0">CEP:</h6>
+                        <p>{{user?.cep}}</p>
+                    </div>
+                    <div class="col-6" style="align-self: center; padding-left: 13%;">
+                        <i class="fa fa-user-circle" style="font-size: 110px; " aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h6 class="m-0">Estado:</h6>
+                        <p>{{user?.estado}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Cidade:</h6>
+                        <p>{{user?.cidade}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Bairro:</h6>
+                        <p>{{user?.bairro}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h6 class="m-0">Número:</h6>
+                        <p>{{user?.numero}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Rua:</h6>
+                        <p>{{user?.rua}}</p>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="m-0">Complemento:</h6>
+                        <p>{{user?.complemento}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h6 class="m-0">Telefone:</h6>
+                        <p>{{user?.telefone}}</p>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="m-0">Disponibilidade para entrega:</h6>
+                        <p>{{entrega}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mt-4 p-4">
+        <div class="col-12 mt-5">
+
+            <h4 class="text-center mb-4" style="letter-spacing: 5px;">LISTA DE PRODUTOS</h4>
+            <table id="tabelaProduto" class="table table-striped table-bordered dt-responsive nowrap">
+                <thead>
+                    <tr>
+                        <th> Nome</th>
+                        <th> Categoria </th>
+                        <th> Quantidade </th>
+                        <th> Valor </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="produtosList.length > 0">
+                    <tr *ngFor="let produto of produtosList">
+                        <td>{{produto.nome}}</td>
+                        <td>{{produto.categoria}}</td>
+                        <td>{{produto.quantidade}} {{produto.medida}}</td>
+                        <td>R$ {{produto.preco}} {{produto.medida}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -9,15 +9,12 @@
       <img src="./../../../../assets/img/cesta-mixta.webp" class="img-fluid" alt="" style="height: 500px;">
     </div>
 
-
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <button class="nav-link color-text active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
-          type="button" role="tab" aria-controls="nav-home" aria-selected="true">Todos Produtores</button>
+          type="button" role="tab" aria-controls="nav-home" aria-selected="true" (click)="getProdutores()">Todos Produtores</button>
         <button class="nav-link color-text" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-          type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Por Local</button>
-        <button class="nav-link color-text" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
-          type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Por Local e Categoira</button>
+          type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Por produto</button>
       </div>
     </nav>
   </div>
@@ -27,17 +24,20 @@
       <div class="row mb-4">
         <div class="col-3"></div>
         <form class="d-flex col-6" role="search">
-          <input class="form-control me-2" type="search" placeholder="pesquise pelo produto desejado"
-            aria-label="Search">
+          <input class="form-control me-2" type="search" placeholder="pesquise pela cidade desejada"
+            aria-label="Search" [formControl]="campoBusca">
         </form>
         <div class="col-3"></div>
       </div>
-      <div class="row w-100 m-0">
-        <div class="col-6">
-          <app-barraca></app-barraca>
-        </div>
-        <div class="col-6">
-          <app-barraca></app-barraca>
+     
+      <div class="row w-100 m-0" *ngIf="listProdutores.length <= 0">
+        <p class="text-center">nenhuma barraca encontrada</p>
+      </div>
+      <div class="row w-100 m-0" *ngIf="listProdutores.length > 0">
+        <div class="col-6" *ngFor="let produtor of listProdutores">
+          <div *ngIf="produtor.tipo == 'produtor'">
+             <app-barraca [produtor]="produtor"></app-barraca>
+          </div>
         </div>
       </div>
     </div>
@@ -47,41 +47,21 @@
         <div class="col-8">
           <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="pesquise pela cidade desejada"
-              aria-label="Search">
+              aria-label="Search" [formControl]="campoBuscaCidade">
             <input class="form-control me-2" type="search" placeholder="pesquise pelo produto desejado"
-              aria-label="Search">
+              aria-label="Search" [formControl]="campoBuscaProduto">
           </form>
         </div>
         <div class="col-2"></div>
       </div>
-      <div class="row w-100 m-0">
-        <div class="col-6">
-          <app-barraca></app-barraca>
-        </div>
-        <div class="col-6">
-          <app-barraca></app-barraca>
-        </div>
+      <div class="row w-100 m-0" *ngIf="listProdutores.length <= 0">
+        <p class="text-center">nenhuma barraca encontrada</p>
       </div>
-    </div>
-    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
-      <div class="row mb-4">
-        <div class="col-2"></div>
-        <div class="col-8">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="pesquise pela cidade desejada"
-              aria-label="Search">
-            <input class="form-control me-2" type="search" placeholder="pesquise pelo categoria desejada"
-              aria-label="Search">
-          </form>
-        </div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row w-100 m-0">
-        <div class="col-6">
-          <app-barraca></app-barraca>
-        </div>
-        <div class="col-6">
-          <app-barraca></app-barraca>
+      <div class="row w-100 m-0" *ngIf="listProdutores.length > 0">
+        <div class="col-6" *ngFor="let produtor of listProdutores">
+          <div *ngIf="produtor.tipo == 'produtor'">
+            <app-barraca [produtor]="produtor"></app-barraca>
+         </div>
         </div>
       </div>
     </div>
