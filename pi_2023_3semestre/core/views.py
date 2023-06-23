@@ -4,7 +4,7 @@ import jwt
 import pymongo
 from bson import ObjectId
 from datetime import datetime, timedelta
-from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound, HttpResponseBadRequest
 from django.urls import reverse
 
 from django.views.decorators.csrf import csrf_exempt
@@ -20,7 +20,7 @@ def login(request):
     if request.method == 'POST':
         collection = db["barraca"]
         data = json.loads(request.body)
-        
+
         pipeline = [
             {"$match": {"email": data["email"]}},
             {
@@ -52,7 +52,7 @@ def login(request):
                     'user': result[0],
                     'exp': datetime.utcnow() + timedelta(minutes=15)
                 }
-               
+
                 secret_key = 'stardewgreen'
                 token = jwt.encode(payload, secret_key, algorithm='HS256')
                 response = HttpResponse()
@@ -433,3 +433,185 @@ def usuarioEmail(request, email):
             return HttpResponse(retorno, content_type='application/json')
         else:
             return HttpResponseNotFound("usuario não encontrado")
+
+
+@csrf_exempt
+def findUserByFilter(request):
+    conn = pymongo.MongoClient(localhost)
+    db = conn["banco"]
+
+    if request.method == 'GET':
+
+        cidade = request.GET.get('cidade')
+        nome_item = request.GET.get('item')
+        
+        if not cidade and not nome_item:
+            return HttpResponseBadRequest('Parâmetros cidade e item são obrigatórios.')
+        
+        collection = db['barraca']
+    
+        if(cidade and nome_item):
+            pipelineCidadeProduto = [
+                {
+                    '$match': {
+                        'cidade': {
+                            '$regex': '^' + cidade,
+                            '$options': 'i'
+                        }
+                    }
+                },
+                {
+                    '$lookup': {
+                        'from': 'itens',
+                        'let': {'barracaId': '$_id'},
+                        'pipeline': [
+                            {
+                                '$match': {
+                                    '$expr': {'$eq': ['$$barracaId', {'$toObjectId': '$id_barraca'} ] },
+                                    'nome': {
+                                        '$regex': '^' + nome_item,
+                                        '$options': 'i'
+                                    }
+                                }
+                            }
+                        ],
+                        'as': 'itens'
+                    }
+                },
+                {
+                    '$match': {
+                        'itens': {
+                            '$ne': []
+                        }
+                    }
+                },
+                {
+                    '$project': {
+                        '_id': 1,
+                        'email': 1,
+                        'nome': 1,
+                        'tipo': 1,
+                        'senha': 1,
+                        'entrega': 1,
+                        'cep': 1,
+                        'rua': 1,
+                        'cidade': 1,
+                        'complemento': 1,
+                        'bairro': 1,
+                        'estado': 1,
+                        'telefone': 1,
+                        'numero': 1,
+                        'itens': 1
+                    }
+                }
+            ]
+            barraca= list(collection.aggregate(pipelineCidadeProduto))
+            
+        elif(cidade and not nome_item):
+            pipelineCidade = [
+                {
+                    '$match': {
+                        'cidade': {
+                            '$regex': '^' + cidade,
+                            '$options': 'i'
+                        }
+                    }
+                },
+                {
+                    '$lookup': {
+                        'from': 'itens',
+                        'let': {'barracaId': '$_id'},
+                        'pipeline': [
+                            {
+                                '$match': {
+                                    '$expr': {'$eq': ['$$barracaId', {'$toObjectId': '$id_barraca'} ] }
+                                }
+                            }
+                        ],
+                        'as': 'itens'
+                    }
+                },
+                {
+                    '$match': {
+                        'itens': {
+                            '$ne': []
+                        }
+                    }
+                },
+                {
+                    '$project': {
+                        '_id': 1,
+                        'email': 1,
+                        'nome': 1,
+                        'tipo': 1,
+                        'senha': 1,
+                        'entrega': 1,
+                        'cep': 1,
+                        'rua': 1,
+                        'cidade': 1,
+                        'complemento': 1,
+                        'bairro': 1,
+                        'estado': 1,
+                        'telefone': 1,
+                        'numero': 1,
+                        'itens': 1
+                    }
+                }
+            ]
+            barraca= list(collection.aggregate(pipelineCidade))
+            
+        elif(nome_item and not cidade):
+            pipelineProduto = [
+                {
+                    '$lookup': {
+                        'from': 'itens',
+                        'let': {'barracaId': '$_id'},
+                        'pipeline': [
+                            {
+                                '$match': {
+                                    '$expr': {'$eq': ['$$barracaId', {'$toObjectId': '$id_barraca'} ] },
+                                    'nome': {
+                                        '$regex': '^' + nome_item,
+                                        '$options': 'i'
+                                    }
+                                }
+                            }
+                        ],
+                        'as': 'itens'
+                    }
+                },
+                {
+                    '$match': {
+                        'itens': {
+                            '$ne': []
+                        }
+                    }
+                }
+            ]
+            barraca= list(collection.aggregate(pipelineProduto))
+        
+        barracas = []
+        for i in barraca:
+            i['_id'] = str(i['_id'])
+            ibarraca = {
+                '_id': str(i['_id']),
+                'email': i['email'],
+                'nome': i['nome'],
+                'tipo': i['tipo'],
+                'senha': i['senha'],
+                'entrega': i['entrega'],
+                'cep': i['cep'],
+                'rua': i['rua'],
+                'cidade': i['cidade'],
+                'complemento': i['complemento'],
+                'bairro': i['bairro'],
+                'estado': i['estado'],
+                'telefone': i['telefone'],
+                'numero': i['numero'],
+                
+            }
+            for item in i['itens']:
+                item['_id'] = str(item['_id'])
+            barracas.append(i)
+        retorno = json.dumps(barracas)
+        return HttpResponse(retorno, content_type='application/json')
