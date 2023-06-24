@@ -5,7 +5,6 @@ from pymongo import MongoClient
 
 client = MongoClient('localhost', 27017)
 db = client['banco']
-collection = db['barraca']
 
 class ViewTests(TestCase):
     def setUp(self):
@@ -18,9 +17,9 @@ class ViewTests(TestCase):
         self.login_url = reverse('login')
         self.all_users_url = reverse('allUsers')
         self.usercadastro_url = reverse('usercadastro')
-        self.user_url = reverse('user', args=[str(self.last_id_barraca)])  # tira o 1 e coloca o id do user
+        self.user_url = reverse('user', args=[str(self.last_id_barraca)])
         self.all_itens_url = reverse('allItens')
-        self.itens_url  = reverse('itens', args=[str(self.last_id_itens)])  # aqui também
+        self.itens_url  = reverse('itens', args=[str(self.last_id_itens)])
         self.itemcadastro_url = reverse('itemcadastro')
 
     def test_usuario_post(self):
@@ -55,9 +54,6 @@ class ViewTests(TestCase):
     def test_login(self):
         response = self.client.post(self.login_url, json.dumps({"email": "test@example.com", "senha": "password"}), content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        # self.assertIn('x-access-token', response.headers)
-        # token = response.headers['x-access-token']
-        
 
     def test_itens_get(self):
         # Pega o último registro
@@ -67,13 +63,10 @@ class ViewTests(TestCase):
 
         response = self.client.get(self.itens_url)
         self.assertEqual(response.status_code, 200)
-        # item_data = json.loads(response.content)
-        # self.assertTrue(isinstance(item_data, list))
 
     def test_itens_post(self):
         response = self.client.post(self.itemcadastro_url, json.dumps({'nome': 'Item 1', 'descricao': 'Descrição do Item 1'}), content_type='application/json')
         self.assertEqual(response.status_code, 201)
-        # self.assertEqual(response.content, 'Requisição POST processada com sucesso!'.encode('utf-8'))
 
     def test_itens_put(self):
         # Pega o último registro
@@ -89,9 +82,6 @@ class ViewTests(TestCase):
         response = self.client.get(self.all_itens_url)
         self.assertEqual(response.status_code, 200)
 
-        # item_data = json.loads(response.content)
-        # self.assertTrue(isinstance(item_data, list))
-
     def test_itens_delete(self):
         # Pega o último registro
         collection = db['itens']
@@ -99,7 +89,6 @@ class ViewTests(TestCase):
         self.itens_url = reverse('itens', args=[str(self.last_id_itens)])
 
         response = self.client.delete(self.itens_url, json.dumps({ "id": str(self.last_id_itens) }), content_type='application/json')
-
         self.assertEqual(response.status_code, 204)
 
     def test_usuario_delete(self):
@@ -110,7 +99,3 @@ class ViewTests(TestCase):
 
         response = self.client.delete(self.user_url, json.dumps({ "id": str(self.last_id_barraca) }), content_type='application/json')
         self.assertEqual(response.status_code, 204)
-
-    # Apagando item criado
-    # collection.barraca.delete_one(last_id_barraca)
-    # collection.itens.delete_one(last_id_itens)
